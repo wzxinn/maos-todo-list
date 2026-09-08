@@ -2247,6 +2247,68 @@
       "action": "deleted",
       "by": "e1",
       "detail": "删除任务：冒烟显式人天"
+    },
+    {
+      "id": "ev7k",
+      "at": "2026-09-08T15:21:14.627Z",
+      "entityType": "todo",
+      "entityId": "t7j",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：冒烟board流转"
+    },
+    {
+      "id": "ev7l",
+      "at": "2026-09-08T15:21:14.653Z",
+      "entityType": "todo",
+      "entityId": "t7j",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "todo",
+      "to": "doing",
+      "detail": "看板泳道：冒烟board流转 → 处理中"
+    },
+    {
+      "id": "ev7m",
+      "at": "2026-09-08T15:21:14.673Z",
+      "entityType": "todo",
+      "entityId": "t7j",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "doing",
+      "to": "review",
+      "detail": "看板泳道：冒烟board流转 → 评审中"
+    },
+    {
+      "id": "ev7n",
+      "at": "2026-09-08T15:21:14.682Z",
+      "entityType": "todo",
+      "entityId": "t7j",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "review",
+      "to": "done",
+      "detail": "看板泳道：冒烟board流转 → 已完成"
+    },
+    {
+      "id": "ev7o",
+      "at": "2026-09-08T15:21:14.692Z",
+      "entityType": "todo",
+      "entityId": "t7j",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "done",
+      "to": "todo",
+      "detail": "看板泳道：冒烟board流转 → 待处理"
+    },
+    {
+      "id": "ev7p",
+      "at": "2026-09-08T15:21:14.706Z",
+      "entityType": "todo",
+      "entityId": "t7j",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：冒烟board流转"
     }
   ],
   "acks": [

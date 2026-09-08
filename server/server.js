@@ -1225,6 +1225,24 @@ async function handleApi(req, res, db, u) {
     return json(res, 200, { ok: true });
   }
 
+  /* POST /api/todo/:id/board —— 迭代看板泳道拖拽：四态自由流转（未开始/处理中/评审中/已完成），区别于严格状态机 */
+  if (parts[1] === 'todo' && parts[2] && parts[3] === 'board') {
+    const todo = db.todos.find(x => x.id === parts[2]);
+    if (!todo) return json(res, 404, { error: 'todo not found' });
+    const next = body.status;
+    if (!['todo', 'doing', 'review', 'done'].includes(next)) return json(res, 400, { error: '泳道状态仅支持 未开始/处理中/评审中/已完成' });
+    const from = todo.status;
+    todo.status = next;
+    if (next === 'done') todo.doneAt = todo.doneAt || nowISO();
+    else if (from === 'done') delete todo.doneAt;
+    if (next === 'todo') todo.today = false;   /* 拖回未开始 → 不再占今日盘子（要开始再点「开始处理」） */
+    if (next === 'doing' && from === 'todo') todo.today = true;
+    todo.updatedAt = nowISO();
+    logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'status_changed', by: todo.assigneeId, from, to: next, detail: '看板泳道：' + todo.title + ' → ' + (STATUS_META[next] || {}).label });
+    saveDb(db);
+    return json(res, 200, { ok: true });
+  }
+
   /* POST /api/todo/:id/shelf —— 暂时搁置：处理中的单子暂停，从今日待办移出回到「未完成事项」 */
   if (parts[1] === 'todo' && parts[2] && parts[3] === 'shelf') {
     const todo = db.todos.find(x => x.id === parts[2]);

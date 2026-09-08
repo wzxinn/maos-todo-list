@@ -1,7 +1,7 @@
 /* 自动生成：App.vue 控制器逻辑按域拆分（computed/methods 归组） */
 export default {
   computed: {
-    adminTabs() { return [ {key:'overview',label:'全局看板'}, {key:'tasks',label:'任务管理'}, {key:'bounty',label:'悬赏榜单'}, {key:'risk',label:'风险看板'}, {key:'people',label:'人员管理'}, {key:'version',label:'版本节奏'}, {key:'export',label:'数据导出'} ]; },
+    adminTabs() { return [ {key:'overview',label:'全局看板'}, {key:'tasks',label:'任务管理'}, {key:'board',label:'迭代看板'}, {key:'bounty',label:'悬赏榜单'}, {key:'risk',label:'风险看板'}, {key:'people',label:'人员管理'}, {key:'version',label:'版本节奏'}, {key:'export',label:'数据导出'} ]; },
     seriesOpts() { return [
                 { k: 'HC', label: '研发 HC', color: '#0e7490' },
                 { k: 'HCS', label: '研发 HCS', color: '#7c3aed' },

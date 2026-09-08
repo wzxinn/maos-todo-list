@@ -10,6 +10,9 @@
     <!-- 成员是否可支撑 + OnCall 排班管理 -->
     <admin-support style="margin-bottom:12px"></admin-support>
 
+    <!-- 团队每日播报：催办 + 今日产出 -->
+    <admin-digest style="margin-bottom:12px"></admin-digest>
+
     <!-- 未来 7 天：成员人力管道负载热力图（ECharts） -->
     <div class="panel" style="margin-bottom:12px">
       <h3>成员负载热力图 · 未来 7 天（转测×3 / 截止×2）</h3>
@@ -62,11 +65,12 @@
 
 <script>
 import AdminSupport from './AdminSupport.vue';
+import AdminDigest from './AdminDigest.vue';
 import { rc, rm, ROOT_DATA, ROOT_COMPUTED, ROOT_METHODS } from './rootRefs';
 export default {
   name: 'AdminOverview',
   inject: ['root'],
-  components: { AdminSupport },
+  components: { AdminSupport, AdminDigest },
   computed: rc(ROOT_DATA.concat(ROOT_COMPUTED)),
   methods: rm(ROOT_METHODS)
 };

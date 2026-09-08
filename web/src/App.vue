@@ -17,6 +17,7 @@
     <!-- 管理台各页签 -->
     <admin-overview v-if="view==='admin' && tab==='overview'"></admin-overview>
     <admin-tasks v-if="view==='admin' && tab==='tasks'"></admin-tasks>
+    <admin-board v-if="view==='admin' && tab==='board'"></admin-board>
     <admin-bounty v-if="view==='admin' && tab==='bounty'"></admin-bounty>
     <admin-version v-if="view==='admin' && tab==='version'"></admin-version>
     <admin-risk v-if="view==='admin' && tab==='risk'"></admin-risk>
@@ -81,6 +82,7 @@ import LoginView from './components/LoginView.vue';
 import MeView from './components/MeView.vue';
 import AdminOverview from './components/AdminOverview.vue';
 import AdminTasks from './components/AdminTasks.vue';
+import AdminBoard from './components/AdminBoard.vue';
 import AdminBounty from './components/AdminBounty.vue';
 import AdminVersion from './components/AdminVersion.vue';
 import AdminRisk from './components/AdminRisk.vue';
@@ -100,7 +102,7 @@ if (ElementPlus.ElMessage == null) ElementPlus.ElMessage = ElMessage;
 
 
 export default {
-  components: { HeaderBar, LoginView, MeView, AdminOverview, AdminTasks, AdminBounty, AdminVersion, AdminRisk, AdminExport, AdminPeople },
+  components: { HeaderBar, LoginView, MeView, AdminOverview, AdminTasks, AdminBoard, AdminBounty, AdminVersion, AdminRisk, AdminExport, AdminPeople },
   provide() { return { root: this }; },
   mixins: [coreLogic, meLogic, todoOpsLogic, overviewLogic, tasksLogic, bountyLogic, riskLogic, exportLogic, legacyLogic],
   data() {
