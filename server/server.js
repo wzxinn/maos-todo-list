@@ -562,7 +562,7 @@ function scanRisks(db) {
   /* 4) 延期 */
   act.forEach(todo => {
     if (!todo.dueAt) return;
-    const dd = daysBetween(todo.dueAt, t);
+    const dd = daysBetween(t, todo.dueAt);   // = dueAt - 今天：正=还剩几天，负=已超期
     if (dd < 0) {
       push(dd <= -3 ? 'high' : 'medium', 'delay', '任务延期', '「' + todo.title + '」已超期 ' + (-dd) + ' 天', '更新预计完成时间，评估调整范围或转交', 'todo', todo.id);
     } else if (dd <= 1 && (todo.priority === 'P0' || todo.priority === 'P1')) {
@@ -685,7 +685,7 @@ function enrichTodo(db, t) {
     unitExamAt: (unit && unit.exam && unit.exam.examAt) ? unit.exam.examAt : null,
     unitExamSubject: (unit && unit.exam && unit.exam.subject) ? unit.exam.subject : null,
     dueLabel: relLabel(t.dueAt, today()),
-    dueDiff: t.dueAt ? daysBetween(t.dueAt, today()) : null,
+    dueDiff: t.dueAt ? daysBetween(today(), t.dueAt) : null,
     bugNo: bugNoRaw,
     bugUrl,
     sourceVersion: (t.meta && t.meta.sourceVersion) ? t.meta.sourceVersion : null,
@@ -886,6 +886,37 @@ function buildPrompt(db) {
 /* ============================================================================
  * BUG 单导入：按责任人名字匹配成员，自动入待办；已有同号 BUG 则更新
  * ========================================================================== */
+/* 从一段文本里猜命中版本：优先精确命中版本名（长名优先），否则按 HCSO/HCS/HC 系列关键字找最近的在研版本 */
+function guessVersionFromText(db, text) {
+  const up = String(text || '').toUpperCase();
+  if (!up) return null;
+  const devs = db.versions.filter(v => v.kind !== 'live');
+  const byLen = devs.slice().sort((a, b) => String(b.name || '').length - String(a.name || '').length);
+  for (const v of byLen) {
+    const vn = String(v.name || '').toUpperCase();
+    if (vn && up.indexOf(vn) >= 0) return v;
+  }
+  const hit = kw => {
+    let i = 0;
+    while (true) {
+      i = up.indexOf(kw, i);
+      if (i < 0) return false;
+      const pre = i > 0 ? up.charCodeAt(i - 1) : 0;
+      const post = i + kw.length < up.length ? up.charCodeAt(i + kw.length) : 0;
+      const L = c => (c >= 65 && c <= 90) || (c >= 97 && c <= 122);
+      if (!L(pre) && !L(post)) return true;
+      i = i + kw.length;
+    }
+  };
+  for (const kw of ['HCSO', 'HCS', 'HC']) {
+    if (hit(kw)) {
+      const cands = devs.filter(v => v.series === kw).sort((a, b) => (b.release < a.release ? -1 : 1));
+      if (cands.length) return cands[0];
+    }
+  }
+  return null;
+}
+
 function importBugs(db, payload) {
   const rows = (payload && payload.data && payload.data.result) || (payload && payload.result) || [];
   if (!Array.isArray(rows) || !rows.length) return { error: '没解析到 data.result 数组，请检查 JSON 结构' };
@@ -912,6 +943,9 @@ function importBugs(db, payload) {
       if (returnReason) descParts.push('返回原因：' + returnReason);
       if (sysLink) descParts.push('关联：' + sysLink);
       const meta = { bugNo: number, sourceVersion: versionTitle || null, returnReason: returnReason || null, sourceSystemLink: sysLink || null };
+      /* 标题/来源版本里命中 HC/HCS/HCSO 或版本号 → 自动挂到该版本，到期=版本发布日 */
+      const hitVer = guessVersionFromText(db, (title || '') + ' ' + (versionTitle || '') + ' ' + (b.title || ''));
+      if (hitVer) meta.verSeries = hitVer.series;
       const linkObj = { type: 'bug', title: 'BUG ' + number, url: bugUrl, refId: number };
       const existing = db.todos.find(t => t.assigneeId === emp.id && t.meta && t.meta.bugNo === number);
       if (existing) {
@@ -919,23 +953,27 @@ function importBugs(db, payload) {
         existing.description = descParts.join('\n');
         existing.meta = Object.assign({}, existing.meta, meta);
         existing.links = [linkObj];
+        if (hitVer) { existing.versionId = hitVer.id; existing.dueAt = hitVer.release || existing.dueAt; }
         existing.updatedAt = nowISO();
         if (existing.status === 'done' || existing.status === 'canceled') existing.status = 'todo';
-        logEvent(db, { entityType: 'todo', entityId: existing.id, action: 'status_changed', by: emp.id, from: 'import', to: existing.status, detail: 'BUG ' + number + ' 导入更新：' + title });
+        logEvent(db, { entityType: 'todo', entityId: existing.id, action: 'status_changed', by: emp.id, from: 'import', to: existing.status, detail: 'BUG ' + number + ' 导入更新：' + title + (hitVer ? '（挂 ' + hitVer.name + '，到期 ' + (hitVer.release || '') + '）' : '') });
         report.updated++;
-        report.details.push({ number, assignee: name, action: 'updated' });
+        report.details.push({ number, assignee: name, action: 'updated', version: hitVer ? hitVer.name : null });
       } else {
         const todo = {
           id: nid('t'), title, description: descParts.join('\n'), type: 'bug',
           priority: 'P1', status: 'todo', assigneeId: emp.id, creatorId: emp.id,
-          dueAt: null, requirementId: null, unitId: null, versionId: null,
+          dueAt: hitVer ? (hitVer.release || null) : null,
+          requirementId: null, unitId: null,
+          versionId: hitVer ? hitVer.id : null,
           tags: ['BUG导入'], meta, links: [linkObj], parentId: null,
+          today: false, dndUntil: null,
           createdAt: nowISO(), updatedAt: nowISO()
         };
         db.todos.push(todo);
-        logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'created', by: emp.id, detail: '导入 BUG ' + number + '：' + title });
+        logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'created', by: emp.id, detail: '导入 BUG ' + number + '：' + title + (hitVer ? '（挂 ' + hitVer.name + '，到期 ' + (hitVer.release || '') + '）' : '') });
         report.created++;
-        report.details.push({ number, assignee: name, action: 'created' });
+        report.details.push({ number, assignee: name, action: 'created', version: hitVer ? hitVer.name : null });
       }
     });
   });

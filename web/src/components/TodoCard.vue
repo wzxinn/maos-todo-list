@@ -59,7 +59,7 @@
               <el-button v-for="s in progressStages" :key="s" size="small" :type="t.progress===s ? 'primary' : 'default'" :class="t.progress===s ? 'prog-on' : ''" @click="setProgress(t,s)">{{ s }}</el-button>
             </el-button-group>
           </div>
-          <div class="td-owner row small" v-if="mode==='open' || mode==='today'">
+          <div class="td-owner row small" v-if="(mode==='open' || mode==='today') && t.type!=='bug'">
             <button class="peer-chip" @click="editPeer(t,'dev')" :title="ownerDev ? '点击修改特性 Owner' : '点击填写特性 Owner'">特性 Owner: {{ ownerDev || '—' }}</button>
             <button class="peer-chip" @click="editPeer(t,'test')" :title="ownerTest ? '点击修改测试责任人' : '点击填写测试责任人'">测试责任人: {{ ownerTest || '—' }}</button>
           </div>

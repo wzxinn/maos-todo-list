@@ -111,7 +111,34 @@
   "versions": [],
   "units": [],
   "sites": [],
-  "todos": [],
+  "todos": [
+    {
+      "id": "t68",
+      "title": "BUG#9999 渲染Owner验证",
+      "description": "",
+      "type": "bug",
+      "priority": "P1",
+      "status": "todo",
+      "assigneeId": "e1",
+      "creatorId": "e1",
+      "dueAt": null,
+      "requirementId": null,
+      "unitId": null,
+      "versionId": null,
+      "tags": [],
+      "meta": {
+        "peerDev": "李四",
+        "peerTest": "王五"
+      },
+      "links": [],
+      "parentId": null,
+      "progress": "",
+      "today": false,
+      "dndUntil": null,
+      "createdAt": "2026-09-08T07:21:46.942Z",
+      "updatedAt": "2026-09-08T07:21:46.942Z"
+    }
+  ],
   "events": [
     {
       "id": "ev1",
@@ -1646,6 +1673,69 @@
       "action": "version_removed",
       "by": "sys",
       "detail": "删除版本：ZZZ渲染检查（连同 0 个迭代）"
+    },
+    {
+      "id": "ev60",
+      "at": "2026-09-08T07:21:38.033Z",
+      "entityType": "version",
+      "entityId": "v5z",
+      "action": "version_created",
+      "by": "sys",
+      "detail": "新增版本：V200R021C99x（HCS · 研发）"
+    },
+    {
+      "id": "ev62",
+      "at": "2026-09-08T07:21:38.093Z",
+      "entityType": "todo",
+      "entityId": "t61",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：方向测试"
+    },
+    {
+      "id": "ev64",
+      "at": "2026-09-08T07:21:38.113Z",
+      "entityType": "todo",
+      "entityId": "t63",
+      "action": "created",
+      "by": "e1",
+      "detail": "导入 BUG 12345：修复 HCS 查询性能问题（挂 V200R021C99x，到期 2026-11-07）"
+    },
+    {
+      "id": "ev65",
+      "at": "2026-09-08T07:21:38.173Z",
+      "entityType": "todo",
+      "entityId": "t61",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：方向测试"
+    },
+    {
+      "id": "ev66",
+      "at": "2026-09-08T07:21:38.175Z",
+      "entityType": "todo",
+      "entityId": "t63",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：修复 HCS 查询性能问题"
+    },
+    {
+      "id": "ev67",
+      "at": "2026-09-08T07:21:38.179Z",
+      "entityType": "version",
+      "entityId": "v5z",
+      "action": "version_removed",
+      "by": "sys",
+      "detail": "删除版本：V200R021C99x（连同 0 个迭代）"
+    },
+    {
+      "id": "ev69",
+      "at": "2026-09-08T07:21:46.942Z",
+      "entityType": "todo",
+      "entityId": "t68",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：BUG#9999 渲染Owner验证"
     }
   ],
   "acks": [
