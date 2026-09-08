@@ -7,8 +7,8 @@
         <button class="act op" @click="reload" title="刷新数据">刷新</button>
       </div>
       <div class="hint" style="margin-bottom:8px">口径：排在前面的越可支撑 —— 非专注 / 非 OnCall 的成员按「近 5 天待办数」从少到多；专注中与 OnCall 值守排最后，默认不派活。行尾的「活动」是该成员所有未完成事项数（不限 5 天）。</div>
-      <div class="stack" v-if="supportRows.length" style="gap:6px">
-        <div v-for="row in supportRows" :key="row.emp.id" class="row spread" style="align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff">
+      <div class="stack" v-if="supportBoard.length" style="gap:6px">
+        <div v-for="row in supportBoard" :key="row.emp.id" class="row spread" style="align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff">
           <div class="row" style="align-items:center;gap:8px;flex:1;min-width:0">
             <avatar-badge :who="row.emp"></avatar-badge>
             <div style="min-width:0">
