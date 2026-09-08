@@ -38,7 +38,7 @@ export const ROOT_COMPUTED = ['adminTabs', 'weekDays', 'stats', 'seriesOpts', 'm
 export const ROOT_METHODS = ['logout', 'doLogin', 'goMe', 'goAdmin', 'goTab', 'openEditTodo',
   'startTodo', 'finishTodo', 'riskTodo', 'setStatus', 'shelfTodo', 'delTodo', 'setDnd',
   'dndLeftText', 'editPeer', 'saveEditTodo', 'quickAdd', 'onQuickTypeManual', 'onManualTypePick',
-  'onQuickSeriesManual', 'createTodo', 'importBugs', 'claimBounty', 'returnBounty', 'delBounty',
+  'onQuickSeriesManual', 'createTodo', 'importBugs', 'createBounty', 'claimBounty', 'returnBounty', 'delBounty',
   'bountyPointsOf', 'reload', 'ackRisk', 'riskColor', 'riskKindLabel', 'typeLabelOf',
   'seriesLabel', 'seriesColor', 'seriesCount', 'todoCls', 'ddlStyle', 'ddlText', 'isDnd',
   'nextOf', 'exportMeTodos', 'onMeCollapse', 'loadExport', 'loadPrompt', 'downloadExport',

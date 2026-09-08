@@ -141,7 +141,7 @@
       ],
       "ownerId": null,
       "createdAt": "2026-09-08T07:26:27.932Z",
-      "updatedAt": "2026-09-08T07:32:35.973Z"
+      "updatedAt": "2026-09-08T08:36:15.338Z"
     },
     {
       "id": "v6f",
@@ -250,6 +250,30 @@
       ],
       "exam": null,
       "createdAt": "2026-09-08T07:32:34.607Z"
+    },
+    {
+      "id": "u6w",
+      "versionId": "v6a",
+      "name": "B022",
+      "index": 2,
+      "planStart": "2026-09-09",
+      "planEnd": "2026-09-09",
+      "phases": [
+        {
+          "kind": "lesson",
+          "label": "开发",
+          "start": "2026-09-09",
+          "end": "2026-09-09"
+        },
+        {
+          "kind": "exam",
+          "label": "转测",
+          "start": "2026-09-09",
+          "end": "2026-09-09"
+        }
+      ],
+      "exam": null,
+      "createdAt": "2026-09-08T08:36:13.346Z"
     }
   ],
   "sites": [],
@@ -260,7 +284,7 @@
       "description": "",
       "type": "bug",
       "priority": "P1",
-      "status": "todo",
+      "status": "canceled",
       "assigneeId": "e1",
       "creatorId": "e1",
       "dueAt": null,
@@ -274,11 +298,11 @@
       },
       "links": [],
       "parentId": null,
-      "progress": "",
+      "progress": "已分析",
       "today": false,
       "dndUntil": null,
       "createdAt": "2026-09-08T07:21:46.942Z",
-      "updatedAt": "2026-09-08T07:21:46.942Z"
+      "updatedAt": "2026-09-08T07:51:43.823Z"
     }
   ],
   "events": [
@@ -1963,6 +1987,89 @@
     {
       "id": "ev6o",
       "at": "2026-09-08T07:32:35.973Z",
+      "entityType": "version",
+      "entityId": "v6a",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：7.7.0（名称/版本线/性质/负责人/冻结/发布）"
+    },
+    {
+      "id": "ev6p",
+      "at": "2026-09-08T07:41:51.484Z",
+      "entityType": "todo",
+      "entityId": "t68",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：已转测（BUG#9999 渲染Owner验证）"
+    },
+    {
+      "id": "ev6q",
+      "at": "2026-09-08T07:41:52.497Z",
+      "entityType": "todo",
+      "entityId": "t68",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：修复完成（BUG#9999 渲染Owner验证）"
+    },
+    {
+      "id": "ev6r",
+      "at": "2026-09-08T07:41:53.017Z",
+      "entityType": "todo",
+      "entityId": "t68",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：修复中（BUG#9999 渲染Owner验证）"
+    },
+    {
+      "id": "ev6s",
+      "at": "2026-09-08T07:41:53.540Z",
+      "entityType": "todo",
+      "entityId": "t68",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：已分析（BUG#9999 渲染Owner验证）"
+    },
+    {
+      "id": "ev6t",
+      "at": "2026-09-08T07:41:54.155Z",
+      "entityType": "todo",
+      "entityId": "t68",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：待处理（BUG#9999 渲染Owner验证）"
+    },
+    {
+      "id": "ev6u",
+      "at": "2026-09-08T07:41:55.681Z",
+      "entityType": "todo",
+      "entityId": "t68",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：已分析（BUG#9999 渲染Owner验证）"
+    },
+    {
+      "id": "ev6v",
+      "at": "2026-09-08T07:51:43.823Z",
+      "entityType": "todo",
+      "entityId": "t68",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "todo",
+      "to": "canceled",
+      "detail": "任务状态：待处理 → 已取消"
+    },
+    {
+      "id": "ev6x",
+      "at": "2026-09-08T08:36:13.346Z",
+      "entityType": "unit",
+      "entityId": "u6w",
+      "action": "unit_created",
+      "by": "e1",
+      "detail": "7.7.0 新增迭代：B022（2026-09-09 ~ 2026-09-09）"
+    },
+    {
+      "id": "ev6y",
+      "at": "2026-09-08T08:36:15.338Z",
       "entityType": "version",
       "entityId": "v6a",
       "action": "version_updated",
