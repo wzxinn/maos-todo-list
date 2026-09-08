@@ -2,7 +2,7 @@
   <div>
     <div ref="box" style="width:100%;height:330px"></div>
     <div v-if="noActive" class="hint" style="margin-top:8px">所有版本都标记完成啦——时间线只展示进行中版本；要恢复就在下方版本管理里点「恢复」。</div>
-    <div class="hint" style="margin-top:4px">横条 = 各版本「冻结 ~ 发布」窗口，条上文字是版本名；圆点 = 迭代（悬停看窗口与转测）。红色竖带 = 并行重叠。</div>
+    <div class="hint" style="margin-top:4px">横条 = 各版本「冻结 ~ 发布」窗口，条上文字是版本名；圆点 = 迭代（画在其计划结束日，悬停看计划窗口）。红色竖带 = 并行重叠。</div>
   </div>
 </template>
 
@@ -103,7 +103,7 @@ export default {
           var examAt = u.examView && u.examView.examAt ? par(u.examView.examAt) : null;
           if (examAt) allMs.push(examAt);
           iterData.push({
-            value: [uStart, lane],
+            value: [uEnd, lane],
             symbolSize: 8,
             itemStyle: { color: isLive ? '#cbd5e1' : (u.status && u.status.code === 'passed' ? '#67c23a' : col), borderColor: '#fff', borderWidth: 1 },
             u: {
@@ -175,7 +175,6 @@ export default {
             out.push(u.unit);
             out.push('计划窗口：' + u.start + ' ~ ' + u.end);
             if (u.examAt) out.push('转测：' + u.examAt + (u.examSub ? '（' + u.examSub + '）' : ''));
-            else out.push('转测：未排期');
             return out.join('<br/>');
           }
         },
