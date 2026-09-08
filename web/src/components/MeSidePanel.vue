@@ -7,7 +7,7 @@
       </template>
       <div class="row" style="margin-bottom:8px;gap:6px">
         <span class="muted small" style="margin-right:4px">排序：</span>
-        <button class="act" :class="sortMode==='smart' ? 'sort-on' : ''" @click="sortMode='smart'">重要×紧急</button>
+        <button class="act" :class="sortMode==='smart' ? 'sort-on' : ''" @click="sortMode='smart'">紧急程度</button>
         <button class="act" :class="sortMode==='due' ? 'sort-on' : ''" @click="sortMode='due'">按截止</button>
         <button class="act" :class="sortMode==='prio' ? 'sort-on' : ''" @click="sortMode='prio'">按优先级</button>
       </div>

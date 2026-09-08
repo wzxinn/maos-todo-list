@@ -119,7 +119,7 @@ export default {
       bugJson: '', bugReport: null,
       quickTitle: '', quickType: 'other', quickDue: '', quickToday: true, quickDev: '', quickTest: '', quickSeries: '', quickDaysNum: null,
       autoType: true, _typePicked: false, _seriesManual: false,
-      sortMode: 'smart', tlWidth: 600, openNames: ['open', 'done'], meFilter: '',
+      sortMode: 'smart', tlWidth: 600, openNames: ['open', 'ver'], meFilter: '',
       editOpen: false, editTodo: null, editForm: { title: '', type: 'other', priority: 'P1', dueAt: '', series: '', description: '', peerDev: '', peerTest: '', estDaysNum: null },
       dndPick: null, nowMs: Date.now(),
       defMap: {},
