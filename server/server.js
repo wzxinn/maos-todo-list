@@ -685,6 +685,14 @@ function enrichTodo(db, t) {
     })(),
     /* 估算人天：按优先级给权值（P0 重、P3 轻），人力分布/剩余人天图用 */
     estDays: estDaysOf(t),
+    /* 自动归属推断：未手工挂迭代的 todo，按「到期日 + 大版本系列」给出应属的版本/迭代（看板泳道据此收纳） */
+    matchAuto: (function(){
+      if (t.unitId) return null;                 /* 已手工挂迭代：不推断 */
+      const auto = autoMatchVersionUnit(db, t);
+      if (!auto || !auto.version) return null;
+      const v = auto.version, u = auto.unit;
+      return { versionId: v.id, versionName: v.name, unitId: u ? u.id : null, unitShort: u ? String(u.name).split('·')[0].trim() : '', unitName: u ? u.name : '', auto: true };
+    })(),
     today: !!t.today,
     dndUntil: t.dndUntil || null,
     dndLeftMs: (t.dndUntil && new Date(t.dndUntil).getTime() > Date.now()) ? (new Date(t.dndUntil).getTime() - Date.now()) : 0
@@ -905,6 +913,78 @@ function guessVersionFromText(db, text) {
   return null;
 }
 
+/* 从文本里提取「大版本系列」：必须 HCSO → HCS → HC 的顺序判断（HCSO 内含 HCS、HCS 内含 HC，
+   若先匹配 HC，HCSO/HCS 全会被划进 HC）；带字母边界，避免 "XHC12" 这种被误命中 */
+function seriesOfText(text) {
+  const up = String(text || '').toUpperCase();
+  const isLetter = c => (c >= 65 && c <= 90) || (c >= 97 && c <= 122);
+  for (const kw of ['HCSO', 'HCS', 'HC']) {
+    let i = 0;
+    while (true) {
+      i = up.indexOf(kw, i);
+      if (i < 0) break;
+      const pre = i > 0 ? up.charCodeAt(i - 1) : 0;
+      const post = i + kw.length < up.length ? up.charCodeAt(i + kw.length) : 0;
+      if (!isLetter(pre) && !isLetter(post)) return kw;
+      i = i + kw.length;
+    }
+  }
+  return '';
+}
+
+/* 自动推断一条待办该挂到哪个版本/哪个迭代：
+   - 输入：todo.title / meta.verSeries / dueAt
+   - 顺序：先按「到期时间 + 大版本系列」命中版本（到期落在 [freeze, release] 窗口的优先，其次未来最近发布、再退最近历史），
+     再按到期日命中该版本内的迭代窗口；无 dueAt 不猜迭代，只尽量给系列
+   - 返回 { version, unit } 或 null */
+function autoMatchVersionUnit(db, todo) {
+  const meta = todo.meta || {};
+  const text = [todo.title, meta.verSeries, meta.sourceVersion].filter(Boolean).join(' ');
+  const devs = db.versions.filter(v => v.kind !== 'live');
+  /* 0) 已显式指定版本（如 BUG 导入/手动选过）→ 尊重它，只在该版本内推迭代 */
+  const fixed = db.versions.find(v => v.id === todo.versionId);
+  if (fixed) return { version: fixed, unit: matchUnitByDue(db, fixed, todo.dueAt) };
+  /* 1) 标题/来源里直接出现版本名 → 直接命中该版本 */
+  if (devs.length) {
+    const byLen = devs.slice().sort((a, b) => String(b.name || '').length - String(a.name || '').length);
+    for (const v of byLen) {
+      const vn = String(v.name || '').toUpperCase();
+      if (vn && text.toUpperCase().indexOf(vn) >= 0) {
+        return { version: v, unit: matchUnitByDue(db, v, todo.dueAt) };
+      }
+    }
+  }
+  /* 2) 按系列代号（HCSO→HCS→HC） */
+  const ser = seriesOfText(text);
+  if (!ser) return null;
+  const cands = devs.filter(v => v.series === ser);
+  if (!cands.length) return null;
+  const byRelease = (a, b) => (a.release < b.release ? -1 : a.release > b.release ? 1 : 0);
+  let ver = null;
+  if (todo.dueAt) {
+    /* 到期落在某版本 freeze~release 窗口 → 优先（窗口最贴近到期的优先） */
+    const inWin = cands.filter(v => v.freeze <= todo.dueAt && todo.dueAt <= v.release)
+      .sort((a, b) => (Math.abs(+Date.parse(a.release) - +Date.parse(todo.dueAt)) - Math.abs(+Date.parse(b.release) - +Date.parse(todo.dueAt))));
+    if (inWin.length) ver = inWin[0];
+    else {
+      const future = cands.filter(v => v.release >= todo.dueAt).sort(byRelease);
+      ver = future.length ? future[0] : cands.slice().sort(byRelease).pop();
+    }
+  } else {
+    ver = cands.slice().sort(byRelease).pop();   /* 无到期：取该系列最晚发布的在研版本 */
+  }
+  if (!ver) return null;
+  return { version: ver, unit: matchUnitByDue(db, ver, todo.dueAt) };
+}
+
+/* 到期日落在版本内哪个迭代窗口；无 dueAt / 都不在窗口内 → null */
+function matchUnitByDue(db, version, dueAt) {
+  if (!version || !dueAt) return null;
+  const units = db.units.filter(u => u.versionId === version.id).sort((a, b) => (a.index || 0) - (b.index || 0));
+  if (!units.length) return null;
+  return units.find(u => u.planStart <= dueAt && dueAt <= u.planEnd) || null;
+}
+
 function importBugs(db, payload) {
   const rows = (payload && payload.data && payload.data.result) || (payload && payload.result) || [];
   if (!Array.isArray(rows) || !rows.length) return { error: '没解析到 data.result 数组，请检查 JSON 结构' };
@@ -1114,9 +1194,23 @@ async function handleApi(req, res, db, u) {
       createdAt: nowISO(), updatedAt: nowISO()
     };
     db.todos.push(todo);
-    logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'created', by: todo.creatorId, detail: '创建任务：' + todo.title });
+    /* 自动挂载：若没手动选迭代/版本，按「到期时间 + 大版本系列」推断挂到版本与迭代 */
+    if (!todo.unitId && !body._skipAutoMount) {
+      const hit = autoMatchVersionUnit(db, todo);
+      if (hit && hit.version) {
+        todo.versionId = hit.version.id;
+        todo.unitId = hit.unit ? hit.unit.id : null;
+        todo.meta = Object.assign({}, todo.meta, { _autoMounted: true });
+        if (hit.version.series && !todo.meta.verSeries) todo.meta.verSeries = hit.version.series;
+        logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'created', by: todo.creatorId, detail: '创建任务：' + todo.title + '（自动挂 ' + hit.version.name + (hit.unit ? ' · ' + hit.unit.name : '') + '）' });
+      } else {
+        logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'created', by: todo.creatorId, detail: '创建任务：' + todo.title });
+      }
+    } else {
+      logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'created', by: todo.creatorId, detail: '创建任务：' + todo.title });
+    }
     saveDb(db);
-    return json(res, 200, { ok: true });
+    return json(res, 200, { ok: true, autoMounted: !!(todo.versionId && todo.unitId) });
   }
 
   /* POST /api/todo/:id/status */
@@ -1220,6 +1314,20 @@ async function handleApi(req, res, db, u) {
     }
     todo.meta = meta;
     todo.updatedAt = nowISO();
+    /* 改了到期/版本线且未手工挂迭代（或本来就是自动挂的）→ 按「到期日+大版本」重推版本与迭代 */
+    if ((body.dueAt !== undefined || body.series !== undefined) && (!todo.unitId || meta._autoMounted)) {
+      const hit = autoMatchVersionUnit(db, todo);
+      if (hit && hit.version) {
+        const before = (todo.versionId || '') + '/' + (todo.unitId || '');
+        todo.versionId = hit.version.id;
+        todo.unitId = hit.unit ? hit.unit.id : null;
+        todo.meta = Object.assign({}, todo.meta, { _autoMounted: true });
+        const after = (todo.versionId || '') + '/' + (todo.unitId || '');
+        if (after !== before) {
+          logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'status_changed', by: todo.assigneeId, detail: '编辑待办自动重挂：' + todo.title + ' → ' + hit.version.name + (hit.unit ? ' · ' + hit.unit.name : '') });
+        }
+      }
+    }
     logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'status_changed', by: todo.assigneeId, detail: '编辑待办：' + todo.title });
     saveDb(db);
     return json(res, 200, { ok: true });

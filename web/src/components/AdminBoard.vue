@@ -12,7 +12,7 @@
         <el-select v-model="pickUnit" style="width:200px" size="small" placeholder="选迭代" @change="onUnitChange">
           <el-option v-for="u in versionUnits" :key="u.id" :label="u.name + '（' + u.planStart + ' ~ ' + u.planEnd + '）'" :value="u.id"></el-option>
         </el-select>
-        <span class="hint">拖卡片到其它列 = 改任务状态；顶部统计该迭代人天/进度。</span>
+        <span class="hint">拖卡片到其它列 = 改任务状态；没有手工挂迭代的任务，会按「到期日 + 大版本(HC/HCS/HCSO)」自动归到对应泳道（卡片标 ⚡自动）。</span>
       </div>
       <template v-if="curUnit && unitTodos.length">
         <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap">
@@ -39,7 +39,9 @@
                  @dragstart="dragStart(t)" @dragend="dragEnd"
                  style="background:#fff;border:1px solid var(--line2);border-left:3px solid #409eff;border-radius:8px;padding:7px 9px;cursor:grab">
               <div class="row" style="justify-content:space-between;gap:6px">
-                <span class="small" style="font-weight:600;color:#17233d;flex:1">{{ t.title }}</span>
+                <span class="small" style="font-weight:600;color:#17233d;flex:1">{{ t.title }}
+                  <span v-if="t.matchAuto && t.matchAuto.auto && !t.unitId && t.matchAuto.unitId===pickUnit" class="mono small" title="按到期日+大版本自动归入该迭代" style="color:#909399;font-weight:400">⚡自动</span>
+                </span>
                 <span class="chip mono small" :style="'color:'+t.typeColor+';border-color:'+t.typeColor" :title="t.typeLabel">{{ t.typeLabel }}</span>
               </div>
               <div class="row small muted" style="margin-top:5px;justify-content:space-between;gap:6px">
@@ -98,7 +100,10 @@ export default {
       var s = this.state;
       if (!s || !this.pickUnit) return [];
       return s.todos.filter(function(t){
-        return t.unitId === this.pickUnit && t.status !== 'canceled';
+        if (t.status === 'canceled') return false;
+        if (t.unitId === this.pickUnit) return true;                 /* 手工挂在这个迭代 */
+        if (t.matchAuto && t.matchAuto.unitId === this.pickUnit) return true;  /* 规则推断归属该迭代 */
+        return false;
       }.bind(this));
     },
     totalDays() { var n = 0; this.unitTodos.forEach(function(t){ n += (t.estDays || 0); }); return Math.round(n * 10) / 10; },
