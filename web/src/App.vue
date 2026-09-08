@@ -42,9 +42,9 @@
         </label>
         <label class="f" style="width:150px">截止日期<el-date-picker v-model="editForm.dueAt" type="date" value-format="YYYY-MM-DD" placeholder="选填" style="width:100%"></el-date-picker></label>
       </div>
-      <div class="row" style="gap:8px">
-        <label class="f" style="flex:1">版本线（HC / HCS / HCSO / 上线 / 其他；留空=按所属版本自动）
-          <el-select v-model="editForm.series" style="width:100%" clearable placeholder="自动">
+      <div class="row" style="gap:8px;align-items:flex-start">
+        <label class="f" style="flex:1">版本线（HC / HCS / HCSO / 上线 / 其他）
+          <el-select v-model="editForm.series" style="width:100%" clearable placeholder="自动（按标题）" :disabled="editForm.autoMount">
             <el-option v-for="s in seriesOpts" :key="s.k" :label="s.label" :value="s.k"></el-option>
           </el-select>
         </label>
@@ -52,6 +52,26 @@
           <span class="hint">留空=按类型默认（需求5 / BUG0.5）</span>
         </label>
       </div>
+      <div class="row" style="gap:8px;align-items:center;background:#f7f9fc;border:1px solid var(--line);border-radius:8px;padding:8px 10px">
+        <el-switch v-model="editForm.autoMount" @change="onEditMountMode" style="margin-right:2px"></el-switch>
+        <span class="small" style="font-weight:600;color:#14355f">自动匹配归属</span>
+        <span class="hint" style="flex:1">开：按「到期日 + 大版本(HC/HCS/HCSO)」自动归到对应版本/迭代；关：手动选下面的版本与迭代。</span>
+      </div>
+      <template v-if="!editForm.autoMount">
+        <div class="row" style="gap:8px;align-items:flex-start">
+          <label class="f" style="flex:1">所属版本
+            <el-select v-model="editForm.versionId" style="width:100%" clearable placeholder="选版本" @change="onEditVerChange">
+              <el-option v-for="v in state.versions" :key="v.id" :label="v.name + ' · ' + seriesLabel(v.series) + (v.kind==='live' ? '（上线）' : '')" :value="v.id"></el-option>
+            </el-select>
+          </label>
+          <label class="f" style="flex:1">所属迭代
+            <el-select v-model="editForm.unitId" style="width:100%" clearable placeholder="选迭代" :disabled="!editForm.versionId">
+              <el-option v-for="u in editVersionUnits" :key="u.id" :label="u.name + '（' + u.planStart + ' ~ ' + u.planEnd + '）'" :value="u.id"></el-option>
+            </el-select>
+          </label>
+        </div>
+      </template>
+      <div v-else class="hint" style="margin:-4px 0 0">{{ editMountPreview }}</div>
       <div class="row" style="gap:8px">
         <label class="f" style="flex:1">特性 Owner<el-input v-model="editForm.peerDev" placeholder="同事姓名，选填"></el-input></label>
         <label class="f" style="flex:1">测试责任人<el-input v-model="editForm.peerTest" placeholder="同事姓名，选填"></el-input></label>
@@ -122,7 +142,7 @@ export default {
       quickTitle: '', quickType: 'other', quickDue: '', quickToday: true, quickDev: '', quickTest: '', quickSeries: '', quickDaysNum: null,
       autoType: true, _typePicked: false, _seriesManual: false,
       sortMode: 'smart', tlWidth: 600, openNames: ['open', 'ver'], meFilter: '',
-      editOpen: false, editTodo: null, editForm: { title: '', type: 'other', priority: 'P1', dueAt: '', series: '', description: '', peerDev: '', peerTest: '', estDaysNum: null },
+      editOpen: false, editTodo: null, editForm: { title: '', type: 'other', priority: 'P1', dueAt: '', series: '', description: '', peerDev: '', peerTest: '', estDaysNum: null, versionId: '', unitId: '', autoMount: true },
       dndPick: null, nowMs: Date.now(),
       defMap: {},
       newForm: { title: '', type: 'other', priority: 'P1', assigneeId: '', requirementId: '', unitId: '', dueAt: '', estDaysNum: null }
@@ -154,6 +174,42 @@ export default {
     /* 切视图 / 切管理台 tab 后补绘 ECharts */
     view() { this.paintCharts(); },
     tab() { this.paintCharts(); }
+  },
+  computed: {
+    /* 编辑弹窗：所选版本下的迭代（联动） */
+    editVersionUnits() {
+      var s = this.state;
+      if (!s) return [];
+      var v = s.versions.find(function(x){ return x.id === this.editForm.versionId; }.bind(this));
+      return (v && v.units) ? v.units.slice().sort(function(a,b){ return (a.index||0)-(b.index||0); }) : [];
+    },
+    /* 自动匹配模式下提示将要落到的版本/迭代 */
+    editMountPreview() {
+      var s = this.state;
+      if (!s) return '';
+      var due = this.editForm.dueAt || '';
+      var txt = (this.editForm.title || '') + ' ' + (this.editForm.series || '');
+      /* 粗预览：文本里找版本名，或按系列+到期找窗口版本 */
+      var vs = s.versions.filter(function(v){ return v.kind !== 'live'; });
+      var hit = null;
+      for (var i = 0; i < vs.length; i++) {
+        var vn = String(vs[i].name || '').toUpperCase();
+        if (vn && txt.toUpperCase().indexOf(vn) >= 0) { hit = vs[i]; break; }
+      }
+      if (!hit) {
+        var ser = this.guessSeries(txt);
+        var devs = ser ? vs.filter(function(v){ return v.series === ser; }) : [];
+        if (due) {
+          var inWin = devs.filter(function(v){ return v.freeze <= due && due <= v.release; });
+          if (inWin.length) hit = inWin[0];
+        }
+        if (!hit && devs.length) hit = devs[devs.length - 1];
+      }
+      if (!hit) return '（未找到匹配版本：确认标题含系列代号如 HCS/HCSO，或到期日落在某版本窗口）';
+      var unit = null;
+      if (due && hit.units) unit = hit.units.find(function(u){ return u.planStart <= due && due <= u.planEnd; });
+      return '将自动归属：' + hit.name + ' · ' + (this.seriesLabel ? this.seriesLabel(hit.series) : hit.series) + (unit ? ' → ' + unit.name : '（按到期日精确到迭代）');
+    }
   },
 
   mounted() {

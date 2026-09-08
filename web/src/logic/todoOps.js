@@ -88,9 +88,29 @@ export default {
               description: t.description || '',
               peerDev: m.peerDev || '',
               peerTest: m.peerTest || '',
-              estDaysNum: (t.estDays != null && t.estDays !== '') ? Number(t.estDays) : null
+              estDaysNum: (t.estDays != null && t.estDays !== '') ? Number(t.estDays) : null,
+              versionId: t.versionId || '',
+              unitId: t.unitId || '',
+              autoMount: !(t.versionId || t.unitId) || !!m._autoMounted
             };
             this.editOpen = true;
+          },
+    onEditMountMode() {
+            /* 切到手动：把当前版本/迭代带进下拉；切回自动：清空手选 */
+            if (!this.editForm.autoMount) {
+              if (!this.editForm.versionId && this.editTodo) this.editForm.versionId = this.editTodo.versionId || '';
+              if (!this.editForm.unitId && this.editTodo) this.editForm.unitId = this.editTodo.unitId || '';
+            } else {
+              this.editForm.versionId = '';
+              this.editForm.unitId = '';
+            }
+          },
+    onEditVerChange() {
+            if (this.editForm.unitId) {
+              /* 迭代属于旧版本时清掉，避免串版本 */
+              var u = this.editVersionUnits.find(function(x){ return x.id === this.editForm.unitId; }.bind(this));
+              if (!u) this.editForm.unitId = '';
+            }
           },
     saveEditTodo() {
             var self = this;
@@ -98,11 +118,17 @@ export default {
             var id = this.editTodo.id;
             var f = this.editForm;
             if (!(f.title || '').trim()) { this.toastMsg('标题不能空～'); return; }
-            this.api('/api/todo/' + id + '/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+            var payload = {
               title: f.title, type: f.type, priority: f.priority, dueAt: f.dueAt || null,
               series: f.series || '', description: f.description || '', peerDev: f.peerDev || '', peerTest: f.peerTest || '',
-              estDays: (f.estDaysNum != null && f.estDaysNum !== '') ? Number(f.estDaysNum) : null
-            }) })
+              estDays: (f.estDaysNum != null && f.estDaysNum !== '') ? Number(f.estDaysNum) : null,
+              autoMount: !!f.autoMount
+            };
+            if (!f.autoMount) {
+              payload.versionId = f.versionId || null;
+              payload.unitId = f.unitId || null;
+            }
+            this.api('/api/todo/' + id + '/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
               .then(function(r){
                 if (r.ok) { self.toastMsg('已保存编辑 ✅'); self.editOpen = false; self.reload(); }
                 else self.toastMsg('保存失败：' + (r.error || ''));

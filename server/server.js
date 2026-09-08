@@ -1314,8 +1314,42 @@ async function handleApi(req, res, db, u) {
     }
     todo.meta = meta;
     todo.updatedAt = nowISO();
-    /* 改了到期/版本线且未手工挂迭代（或本来就是自动挂的）→ 按「到期日+大版本」重推版本与迭代 */
-    if ((body.dueAt !== undefined || body.series !== undefined) && (!todo.unitId || meta._autoMounted)) {
+    /* 手动改挂靠：弹窗里关掉「自动匹配」并选了版本/迭代 → 显式落库；反之 autoMount=true → 按规则重推 */
+    if (body.autoMount === true) {
+      const hit = autoMatchVersionUnit(db, todo);
+      if (hit && hit.version) {
+        const before = (todo.versionId || '') + '/' + (todo.unitId || '');
+        todo.versionId = hit.version.id;
+        todo.unitId = hit.unit ? hit.unit.id : null;
+        todo.meta = Object.assign({}, todo.meta, { _autoMounted: true });
+        const after = (todo.versionId || '') + '/' + (todo.unitId || '');
+        if (after !== before) {
+          logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'status_changed', by: todo.assigneeId, detail: '编辑待办自动重挂：' + todo.title + ' → ' + hit.version.name + (hit.unit ? ' · ' + hit.unit.name : '') });
+        }
+      }
+    } else if (body.versionId !== undefined || body.unitId !== undefined) {
+      /* 用户手动指定（或清空）：尊重选择，解除自动标记 */
+      const before = (todo.versionId || '') + '/' + (todo.unitId || '');
+      todo.versionId = body.versionId || null;
+      if (body.unitId !== undefined) {
+        /* unitId 必须属于所挂版本；若给了 unit 没给 version，按 unit 反查版本 */
+        if (todo.unitId && !todo.versionId) {
+          const un = db.units.find(x => x.id === body.unitId);
+          if (un) todo.versionId = un.versionId;
+        }
+        todo.unitId = body.unitId || null;
+      }
+      todo.meta = Object.assign({}, todo.meta);
+      delete todo.meta._autoMounted;
+      const after = (todo.versionId || '') + '/' + (todo.unitId || '');
+      if (after !== before) {
+        const vn2 = db.versions.find(x => x.id === todo.versionId);
+        const un2 = db.units.find(x => x.id === todo.unitId);
+        logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'status_changed', by: todo.assigneeId, detail: '编辑待办改挂靠：' + todo.title + ' → ' + (vn2 ? vn2.name : '不挂版本') + (un2 ? ' · ' + un2.name : '') });
+      }
+    }
+    /* 仅改日期/版本线且之前是自动挂载的兜底（弹窗没传 autoMount/versionId 的旧调用） */
+    else if ((body.dueAt !== undefined || body.series !== undefined) && (!todo.unitId || (todo.meta && todo.meta._autoMounted))) {
       const hit = autoMatchVersionUnit(db, todo);
       if (hit && hit.version) {
         const before = (todo.versionId || '') + '/' + (todo.unitId || '');
