@@ -24,8 +24,11 @@
         <el-option v-for="s in seriesOpts" :key="s.k" :label="s.label" :value="s.k"></el-option>
         <el-option label="自动（按所属版本）" value=""></el-option>
       </el-select>
+      <span class="muted small">工作量（人天）：</span>
+      <el-input-number v-model="quickDaysNum" :min="0" :step="0.5" :precision="1" controls-position="right" style="width:110px"></el-input-number>
+      <span class="hint">留空按类型默认（需求5 / BUG0.5）</span>
     </div>
-    <div class="hint" style="margin-top:6px">勾选「排今天」= 直接进今日待办（默认）；不勾 = 先躺在「未完成事项」。Owner/版本线可留空，卡片上点「编辑」随时补。</div>
+    <div class="hint" style="margin-top:6px">勾选「排今天」= 直接进今日待办（默认）；不勾 = 先躺在「未完成事项」。Owner/版本线/工作量可留空，卡片上点「编辑」随时补。</div>
   </div>
 </template>
 

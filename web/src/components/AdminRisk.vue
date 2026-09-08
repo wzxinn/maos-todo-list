@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row" style="margin-bottom:10px">
-      <span class="muted small">分类汇总：成员上报 / 任务延期超期 / 人员过载 / 人员请假 / 迭代欠账·里程碑</span>
+      <span class="muted small">分类汇总：成员上报 / 任务延期超期 / 人员过载 / 人员请假</span>
       <button class="act" @click="reload">重新扫一遍</button>
     </div>
     <div v-if="!riskGroups.length" class="panel tac" style="padding:36px"><span class="chip" style="border-color:#67c23a;color:#67c23a">✓ 当前没有未确认风险</span></div>

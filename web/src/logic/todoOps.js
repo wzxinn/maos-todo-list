@@ -87,7 +87,8 @@ export default {
               series: m.verSeries || (t.series && t.series !== '其他' ? t.series : ''),
               description: t.description || '',
               peerDev: m.peerDev || '',
-              peerTest: m.peerTest || ''
+              peerTest: m.peerTest || '',
+              estDaysNum: (t.estDays != null && t.estDays !== '') ? Number(t.estDays) : null
             };
             this.editOpen = true;
           },
@@ -99,7 +100,8 @@ export default {
             if (!(f.title || '').trim()) { this.toastMsg('标题不能空～'); return; }
             this.api('/api/todo/' + id + '/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
               title: f.title, type: f.type, priority: f.priority, dueAt: f.dueAt || null,
-              series: f.series || '', description: f.description || '', peerDev: f.peerDev || '', peerTest: f.peerTest || ''
+              series: f.series || '', description: f.description || '', peerDev: f.peerDev || '', peerTest: f.peerTest || '',
+              estDays: (f.estDaysNum != null && f.estDaysNum !== '') ? Number(f.estDaysNum) : null
             }) })
               .then(function(r){
                 if (r.ok) { self.toastMsg('已保存编辑 ✅'); self.editOpen = false; self.reload(); }

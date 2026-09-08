@@ -51,6 +51,9 @@
               </el-select>
             </label>
             <label class="f">截止日期<el-date-picker v-model="newForm.dueAt" type="date" value-format="YYYY-MM-DD" placeholder="选择日期" style="width:100%"></el-date-picker></label>
+            <label class="f">工作量（人天）<el-input-number v-model="newForm.estDaysNum" :min="0" :step="0.5" :precision="1" controls-position="right" style="width:100%"></el-input-number>
+              <span class="hint">留空=按类型默认（需求5 / BUG0.5）</span>
+            </label>
           </div>
           <div class="row spread"><span class="hint">任务会写进事件日志，供历史检索与导出分析。</span><button class="go" @click="createTodo">创建任务</button></div>
         </div>

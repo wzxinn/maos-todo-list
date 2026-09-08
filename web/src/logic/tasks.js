@@ -22,11 +22,11 @@ export default {
     createTodo() {
             var f = this.newForm, self = this;
             if (!f.title || !f.assigneeId) { this.toastMsg('标题和负责人总得填一个吧～'); return; }
-            var payload = { title: f.title, type: f.type, priority: f.priority, assigneeId: f.assigneeId, requirementId: f.requirementId || null, unitId: f.unitId || null, dueAt: f.dueAt || null };
+            var payload = { title: f.title, type: f.type, priority: f.priority, assigneeId: f.assigneeId, requirementId: f.requirementId || null, unitId: f.unitId || null, dueAt: f.dueAt || null, estDays: (f.estDaysNum != null && f.estDaysNum !== '') ? Number(f.estDaysNum) : null };
             var un = this.allUnits.find(function(u){ return u.id === payload.unitId; });
             if (un) payload.versionId = un.versionId;
             this.api('/api/todo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-              .then(function(r){ if (r.ok) self.toastMsg('任务已创建'); self.newForm = { title: '', type: 'other', priority: 'P1', assigneeId: f.assigneeId, requirementId: '', unitId: '', dueAt: '' }; self.autoType = true; self.reload(); });
+              .then(function(r){ if (r.ok) self.toastMsg('任务已创建'); self.newForm = { title: '', type: 'other', priority: 'P1', assigneeId: f.assigneeId, requirementId: '', unitId: '', dueAt: '', estDaysNum: null }; self.autoType = true; self.reload(); });
           },
     importBugs() {
             var self = this, txt = this.bugJson.trim();

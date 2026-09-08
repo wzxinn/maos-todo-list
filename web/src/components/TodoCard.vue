@@ -27,6 +27,7 @@
           </div>
           <div class="row" style="gap:5px">
             <span v-if="t.dueAt" class="chip mono small" :style="ddlStyle(t)" :title="t.dueAt">{{ ddlText(t) }}</span>
+            <span class="chip mono small muted" title="估算工作量（人天）；编辑里可改" style="color:#606266">{{ t.estDays }} 人天</span>
           </div>
         </div>
 

@@ -327,9 +327,9 @@
       "parentId": null,
       "progress": "",
       "today": true,
-      "dndUntil": "2026-09-08T15:29:03.977Z",
+      "dndUntil": null,
       "createdAt": "2026-09-08T11:28:55.117Z",
-      "updatedAt": "2026-09-08T11:29:03.977Z"
+      "updatedAt": "2026-09-08T15:02:57.293Z"
     }
   ],
   "events": [
@@ -2131,6 +2131,122 @@
       "action": "status_changed",
       "by": "e1",
       "detail": "开启专注（240 分钟）：112312US3333"
+    },
+    {
+      "id": "ev74",
+      "at": "2026-09-08T12:05:44.119Z",
+      "entityType": "employee",
+      "entityId": "e1",
+      "action": "employee_updated",
+      "by": "e1",
+      "detail": "OnCall 排班：张伟 2026-09-08 ~ 2026-09-13"
+    },
+    {
+      "id": "ev75",
+      "at": "2026-09-08T15:02:49.187Z",
+      "entityType": "todo",
+      "entityId": "t6z",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "doing",
+      "to": "todo",
+      "detail": "暂时搁置（移出今日待办，回到未完成事项）：112312US3333"
+    },
+    {
+      "id": "ev76",
+      "at": "2026-09-08T15:02:50.627Z",
+      "entityType": "todo",
+      "entityId": "t6z",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "todo",
+      "to": "doing",
+      "detail": "开始处理（已加入今日待办）：112312US3333"
+    },
+    {
+      "id": "ev77",
+      "at": "2026-09-08T15:02:52.916Z",
+      "entityType": "todo",
+      "entityId": "t6z",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "doing",
+      "to": "todo",
+      "detail": "暂时搁置（移出今日待办，回到未完成事项）：112312US3333"
+    },
+    {
+      "id": "ev78",
+      "at": "2026-09-08T15:02:54.371Z",
+      "entityType": "todo",
+      "entityId": "t6z",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "todo",
+      "to": "doing",
+      "detail": "开始处理（已加入今日待办）：112312US3333"
+    },
+    {
+      "id": "ev79",
+      "at": "2026-09-08T15:02:57.293Z",
+      "entityType": "todo",
+      "entityId": "t6z",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "结束专注：112312US3333"
+    },
+    {
+      "id": "ev7b",
+      "at": "2026-09-08T15:11:55.506Z",
+      "entityType": "todo",
+      "entityId": "t7a",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：冒烟bug默认人天"
+    },
+    {
+      "id": "ev7d",
+      "at": "2026-09-08T15:11:55.530Z",
+      "entityType": "todo",
+      "entityId": "t7c",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：冒烟需求默认人天"
+    },
+    {
+      "id": "ev7f",
+      "at": "2026-09-08T15:11:55.554Z",
+      "entityType": "todo",
+      "entityId": "t7e",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：冒烟显式人天"
+    },
+    {
+      "id": "ev7g",
+      "at": "2026-09-08T15:11:55.572Z",
+      "entityType": "todo",
+      "entityId": "t7a",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：冒烟bug默认人天"
+    },
+    {
+      "id": "ev7h",
+      "at": "2026-09-08T15:11:55.575Z",
+      "entityType": "todo",
+      "entityId": "t7c",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：冒烟需求默认人天"
+    },
+    {
+      "id": "ev7i",
+      "at": "2026-09-08T15:11:55.576Z",
+      "entityType": "todo",
+      "entityId": "t7e",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：冒烟显式人天"
     }
   ],
   "acks": [
@@ -2213,5 +2329,14 @@
   ],
   "__seededBounty": true,
   "__mig2": true,
-  "oncalls": []
+  "oncalls": [
+    {
+      "id": "oc73",
+      "empId": "e1",
+      "from": "2026-09-08",
+      "to": "2026-09-13",
+      "createdAt": "2026-09-08T12:05:44.119Z",
+      "updatedAt": "2026-09-08T12:05:44.119Z"
+    }
+  ]
 }

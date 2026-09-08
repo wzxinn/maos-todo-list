@@ -102,6 +102,7 @@ export default {
                   title: title, type: this.quickType || 'bug', priority: 'P1',
                   assigneeId: this.me.id, dueAt: this.quickDue || null,
                   today: this.quickToday,          /* 回车默认排今天 → 进今日待办 */
+                  estDays: (this.quickDaysNum != null && this.quickDaysNum !== '') ? Number(this.quickDaysNum) : null,
                   meta: {
                     peerDev: (this.quickDev || '').trim(), peerTest: (this.quickTest || '').trim(),
                     verSeries: this.quickSeries || ''
@@ -110,7 +111,7 @@ export default {
                 this.api('/api/todo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
                   .then(function(r){
                     if (r.ok) self.toastMsg(self.quickToday ? '已放进今日待办 ✅' : '已存进未完成事项 ✅');
-                    self.quickTitle = ''; self.quickDue = ''; self.quickDev = ''; self.quickTest = ''; self.quickSeries = '';
+                    self.quickTitle = ''; self.quickDue = ''; self.quickDev = ''; self.quickTest = ''; self.quickSeries = ''; self.quickDaysNum = null;
                     self._seriesManual = false;   /* 下一条标题继续自动联动版本线 */
                     self.reload();
                   });

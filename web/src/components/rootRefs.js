@@ -28,7 +28,7 @@ export function rm(keys) {
 export const ROOT_DATA = ['state', 'view', 'meName', 'loginName', 'loginErr', 'tab', 'curVer',
   'filterAssignee', 'filterStatus', 'filterType', 'exportText', 'promptText', 'toast',
   'bountyForm', 'bountyFilter', 'bugJson', 'bugReport', 'quickTitle', 'quickType', 'quickDue',
-  'quickToday', 'quickDev', 'quickTest', 'quickSeries', 'autoType', '_typePicked', 'sortMode',
+  'quickToday', 'quickDev', 'quickTest', 'quickSeries', 'quickDaysNum', 'autoType', '_typePicked', 'sortMode',
   'tlWidth', 'openNames', 'meFilter', 'editOpen', 'editTodo', 'editForm', 'dndPick', 'nowMs',
   'defMap', 'newForm'];
 export const ROOT_COMPUTED = ['adminTabs', 'weekDays', 'stats', 'seriesOpts', 'me', 'cur',

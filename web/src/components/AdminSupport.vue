@@ -32,17 +32,6 @@
       <div v-else class="hint">还没有成员，去「人员管理」先加人。</div>
     </div>
 
-    <!-- ===== OnCall 值班日历图 ===== -->
-    <div class="panel" style="margin-bottom:12px">
-      <div class="row spread" style="margin-bottom:6px">
-        <h3 style="margin-bottom:0">OnCall 值班日历</h3>
-        <button class="act op" @click="renderOcChart" title="重绘时间线">重绘</button>
-      </div>
-      <div class="hint" style="margin-bottom:8px">横轴为日期，每条色带 = 一位成员的 OnCall 区间（含首尾日）；红虚线 = 今天。只画「今天起及未来」的值守，过期的在下方表格里能查。</div>
-      <div ref="ocChart" style="width:100%;height:300px"></div>
-      <div v-if="!ocVisibleRows.length" class="hint" style="margin-top:6px">还没有 OnCall 排班，在下面录入一条，图就会长出来。</div>
-    </div>
-
     <!-- ===== OnCall 排班表：录入入口 + 列表 ===== -->
     <div class="panel">
       <h3>OnCall 排班表</h3>
@@ -80,7 +69,6 @@
 </template>
 
 <script>
-import * as echarts from 'echarts';
 import AvatarBadge from './AvatarBadge.vue';
 import { rc, rm, ROOT_DATA, ROOT_COMPUTED, ROOT_METHODS } from './rootRefs';
 
@@ -96,14 +84,6 @@ export default {
       var s = this.state;
       if (!s) return [];
       return (s.oncalls || []).slice().sort(function(a, b){ return (a.from < b.from ? -1 : a.from > b.from ? 1 : 0); });
-    },
-    /* 图上画的排班：今天起及未来（进行中/待值守），按人归组 */
-    ocVisibleRows() {
-      var s = this.state;
-      if (!s) return [];
-      var today = s.today;
-      return (s.oncalls || []).filter(function(o){ return o.to >= today; })
-        .sort(function(a, b){ return (a.from < b.from ? -1 : a.from > b.from ? 1 : 0); });
     }
   }),
   methods: Object.assign(rm(ROOT_METHODS), {
@@ -132,97 +112,7 @@ export default {
           if (r && r.ok) { self.root.toastMsg('已取消排班：' + o.empName + ' ' + o.from + ' ~ ' + o.to); self.root.reload(); }
           else self.root.toastMsg((r && r.error) ? r.error : '取消失败');
         });
-    },
-    /* ===== OnCall 日历时间线图 ===== */
-    renderOcChart() {
-      var el = this.$refs.ocChart;
-      if (!el || el.clientWidth === 0) return;
-      var rows = this.ocVisibleRows;
-      var today = this.state.today;
-      var DAY = 86400000;
-      var par = function(ds){ return Date.parse(ds + 'T00:00:00Z'); };
-      if (!rows.length) {
-        var ch0 = echarts.getInstanceByDom(el);
-        if (ch0) { ch0.clear(); }
-        return;
-      }
-      var lanes = [];
-      rows.forEach(function(o){ if (lanes.indexOf(o.empName) < 0) lanes.push(o.empName); });
-      var palette = ['#e6a23c', '#f59e0b', '#f97316', '#ef8a3c', '#d97706', '#ea9736', '#e0a83a', '#cf7f1f'];
-      /* 每段排班一条粗横线（两端有点，点上 hover 出详情） */
-      var bandSeries = rows.map(function(o){
-        var li = lanes.indexOf(o.empName);
-        return {
-          name: o.empName,
-          type: 'line',
-          data: [
-            { value: [par(o.from), o.empName], o: o },
-            { value: [par(o.to), o.empName], o: o }
-          ],
-          symbol: 'circle', symbolSize: 8,
-          lineStyle: { width: 22, color: palette[li % palette.length], opacity: 0.55, cap: 'round' },
-          itemStyle: { color: palette[li % palette.length], borderColor: '#fff', borderWidth: 1.5 },
-          z: 3,
-          emphasis: { focus: 'none' }
-        };
-      });
-      var todaySeries = {
-        type: 'line', data: [], silent: true,
-        markLine: {
-          symbol: 'none',
-          lineStyle: { color: '#f56c6c', type: 'dashed', width: 1.5 },
-          label: { show: true, position: 'end', formatter: '今天', color: '#f56c6c', fontSize: 11 },
-          data: [{ xAxis: par(today) }]
-        },
-        z: 5
-      };
-      var allMs = rows.map(function(o){ return par(o.from); }).concat(rows.map(function(o){ return par(o.to); })).concat([par(today)]);
-      var minMs = Math.min.apply(null, allMs) - 2 * DAY;
-      var maxMs = Math.max.apply(null, allMs) + 2 * DAY;
-      var chart = echarts.getInstanceByDom(el) || echarts.init(el);
-      chart.setOption({
-        animationDuration: 150,
-        grid: { left: 84, right: 20, top: 20, bottom: 30 },
-        tooltip: {
-          trigger: 'item', confine: true,
-          backgroundColor: 'rgba(255,255,255,.98)', borderColor: '#cbd5e1',
-          textStyle: { color: '#303133', fontSize: 12 },
-          formatter: function(p){
-            if (!p || !p.data) return '';
-            var o = p.data.o || p.data;
-            if (!o || !o.empName) return '';
-            var st = o.on ? '值守中' : (o.to < today ? '已结束' : '待值守');
-            return '<b>' + o.empName + ' OnCall</b><br/>' + o.from + ' ~ ' + o.to + '<br/>' + st;
-          }
-        },
-        xAxis: {
-          type: 'value', min: minMs, max: maxMs,
-          axisLabel: { color: '#909399', hideOverlap: true, formatter: function(v){ var d = new Date(v); var p = function(n){ return n < 10 ? '0' + n : '' + n; }; return p(d.getMonth() + 1) + '-' + p(d.getDate()); } },
-          splitLine: { show: false },
-          axisLine: { lineStyle: { color: '#dcdfe6' } }
-        },
-        yAxis: {
-          type: 'category', data: lanes, inverse: true,
-          axisLabel: { color: '#334155', fontWeight: 700, fontSize: 12 },
-          axisLine: { show: false }, axisTick: { show: false }
-        },
-        series: bandSeries.concat([todaySeries])
-      });
     }
-  }),
-  mounted() {
-    var self = this;
-    this._ocResize = function(){ self.$nextTick(self.renderOcChart); };
-    this.$nextTick(this.renderOcChart);
-    window.addEventListener('resize', this._ocResize);
-  },
-  beforeUnmount() {
-    if (this._ocResize) window.removeEventListener('resize', this._ocResize);
-    var el = this.$refs.ocChart;
-    if (el) { var c = echarts.getInstanceByDom(el); if (c) c.dispose(); }
-  },
-  watch: {
-    state() { var self = this; this.$nextTick(function(){ self.renderOcChart(); }); }
-  }
+  })
 };
 </script>

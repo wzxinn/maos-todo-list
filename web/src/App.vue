@@ -41,11 +41,16 @@
         </label>
         <label class="f" style="width:150px">截止日期<el-date-picker v-model="editForm.dueAt" type="date" value-format="YYYY-MM-DD" placeholder="选填" style="width:100%"></el-date-picker></label>
       </div>
-      <label class="f">版本线（HC / HCS / HCSO / 上线 / 其他；留空=按所属版本自动）
-        <el-select v-model="editForm.series" style="width:100%" clearable placeholder="自动">
-          <el-option v-for="s in seriesOpts" :key="s.k" :label="s.label" :value="s.k"></el-option>
-        </el-select>
-      </label>
+      <div class="row" style="gap:8px">
+        <label class="f" style="flex:1">版本线（HC / HCS / HCSO / 上线 / 其他；留空=按所属版本自动）
+          <el-select v-model="editForm.series" style="width:100%" clearable placeholder="自动">
+            <el-option v-for="s in seriesOpts" :key="s.k" :label="s.label" :value="s.k"></el-option>
+          </el-select>
+        </label>
+        <label class="f" style="width:170px">工作量（人天）<el-input-number v-model="editForm.estDaysNum" :min="0" :step="0.5" :precision="1" controls-position="right" style="width:100%"></el-input-number>
+          <span class="hint">留空=按类型默认（需求5 / BUG0.5）</span>
+        </label>
+      </div>
       <div class="row" style="gap:8px">
         <label class="f" style="flex:1">特性 Owner<el-input v-model="editForm.peerDev" placeholder="同事姓名，选填"></el-input></label>
         <label class="f" style="flex:1">测试责任人<el-input v-model="editForm.peerTest" placeholder="同事姓名，选填"></el-input></label>
@@ -112,13 +117,13 @@ export default {
       bountyForm: { title: '', desc: '', type: 'other', diff: 'easy' },
       bountyFilter: 'open',
       bugJson: '', bugReport: null,
-      quickTitle: '', quickType: 'other', quickDue: '', quickToday: true, quickDev: '', quickTest: '', quickSeries: '',
+      quickTitle: '', quickType: 'other', quickDue: '', quickToday: true, quickDev: '', quickTest: '', quickSeries: '', quickDaysNum: null,
       autoType: true, _typePicked: false, _seriesManual: false,
       sortMode: 'smart', tlWidth: 600, openNames: ['open', 'done'], meFilter: '',
-      editOpen: false, editTodo: null, editForm: { title: '', type: 'other', priority: 'P1', dueAt: '', series: '', description: '', peerDev: '', peerTest: '' },
+      editOpen: false, editTodo: null, editForm: { title: '', type: 'other', priority: 'P1', dueAt: '', series: '', description: '', peerDev: '', peerTest: '', estDaysNum: null },
       dndPick: null, nowMs: Date.now(),
       defMap: {},
-      newForm: { title: '', type: 'other', priority: 'P1', assigneeId: '', requirementId: '', unitId: '', dueAt: '' }
+      newForm: { title: '', type: 'other', priority: 'P1', assigneeId: '', requirementId: '', unitId: '', dueAt: '', estDaysNum: null }
     };
   },
   watch: {

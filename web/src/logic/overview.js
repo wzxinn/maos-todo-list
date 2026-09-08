@@ -136,7 +136,7 @@ export default {
               grid: { left: 70, right: 24, top: 10, bottom: 40 },
               xAxis: { type: 'category', data: days.map(function(d){ return d.slice(5); }), splitArea: { show: true }, axisLabel: { color: '#909399' } },
               yAxis: { type: 'category', data: names, splitArea: { show: true }, axisLabel: { color: '#334155' } },
-              visualMap: { min: 0, max: 9, calculable: true, orient: 'horizontal', left: 'center', bottom: 2, textStyle: { fontSize: 11 }, inRange: { color: ['#eaf3fb', '#cfe4f5', '#9fc7ea', '#4d9fd8', '#f56c6c'] } },
+              visualMap: { min: 0, max: 9, calculable: false, show: true, orient: 'horizontal', left: 'center', bottom: 2, textStyle: { fontSize: 11 }, inRange: { color: ['#eaf3fb', '#cfe4f5', '#9fc7ea', '#4d9fd8', '#f56c6c'] } },
               series: [{ name: '负载', type: 'heatmap', data: data, label: { show: true, color: '#fff', fontSize: 11 }, emphasis: { itemStyle: { shadowBlur: 8 } } }]
             });
           },

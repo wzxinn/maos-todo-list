@@ -101,7 +101,13 @@ const BOUNTY_STATUS = {
 
 /* 估算人天（用于剩余人力 / 月度完成人力等管理台图表） */
 const EST_DAYS = { P0: 6, P1: 4, P2: 2.5, P3: 1 };
-function estDaysOf(t) { return EST_DAYS[t.priority] != null ? EST_DAYS[t.priority] : 2; }
+/* 估算人天：优先用填写的工作量 estDays；没填则按类型默认（BUG=0.5 / 需求开发=5），其余类型按优先级权值 */
+function estDaysOf(t) {
+  if (t.estDays != null && isFinite(Number(t.estDays)) && Number(t.estDays) >= 0) return Math.round(Number(t.estDays) * 10) / 10;
+  if (t.type === 'bug') return 0.5;
+  if (t.type === 'requirement') return 5;
+  return EST_DAYS[t.priority] != null ? EST_DAYS[t.priority] : 2;
+}
 
 /* 日期统一 'YYYY-MM-DD'，基于 UTC 日界，避免时区漂移 */
 const _NOW = new Date();
@@ -551,16 +557,7 @@ function scanRisks(db) {
     }
   });
 
-  /* 3) 欠账：迭代已结束仍有未完成任务 */
-  db.units.forEach(u => {
-    if (u.planEnd >= t) return;
-    const undone = act.filter(x => x.unitId === u.id);
-    if (!undone.length) return;
-    const v = db.versions.find(vv => vv.id === u.versionId);
-    push('high', 'debt', '迭代欠账', (v ? v.name + ' · ' : '') + u.name + ' 已结束（' + u.planEnd + '），仍有 ' + undone.length + ' 项未完成', '列欠账清单，安排复测或转入下个迭代消化', 'unit', u.id);
-  });
-
-  /* 4) 延期 */
+  /* 3) 延期 */
   act.forEach(todo => {
     if (!todo.dueAt) return;
     const dd = daysBetween(t, todo.dueAt);   // = dueAt - 今天：正=还剩几天，负=已超期
@@ -569,23 +566,6 @@ function scanRisks(db) {
     } else if (dd <= 1 && (todo.priority === 'P0' || todo.priority === 'P1')) {
       const pl = (PRIORITY_META[todo.priority] || {}).label || todo.priority;
       push('medium', 'delay', '临近截止', '「' + todo.title + '」' + (dd === 0 ? '今天' : '明天') + '截止（' + pl + '）', '优先处理，必要时请求支援', 'todo', todo.id);
-    }
-  });
-
-  /* 5) 里程碑漂移 */
-  db.versions.forEach(v => {
-    const stage = buildStage(db, v);
-    const ms = v.milestones.find(m => m.key === 'first_test');
-    const u1 = db.units.filter(u => u.versionId === v.id && u.index === 1);
-    if (ms && ms.at <= t && stage === 'development' && u1.every(u => !u.exam || !u.exam.result)) {
-      push('medium', 'milestone_shift', '转测里程碑漂移', v.name + ' 已过一转测节点（' + ms.at + '）但迭代一转测还没完成', '推进转测准备，必要时调整里程碑', 'version', v.id);
-    }
-    const relMs = v.milestones.find(m => m.key === 'release');
-    if (relMs) {
-      const dd = daysBetween(relMs.at, t);
-      if (dd >= 0 && dd <= 5 && stage !== 'release' && stage !== 'maintenance') {
-        push('high', 'milestone_shift', '发布窗口临近', v.name + ' 距计划发布只剩 ' + dd + ' 天，当前处于' + (STAGE_MAP[stage] ? STAGE_MAP[stage].label : stage), '收敛需求范围，加快转测与回归节奏', 'version', v.id);
-      }
     }
   });
 
@@ -1130,6 +1110,7 @@ async function handleApi(req, res, db, u) {
       tags: t.tags || [], meta: Object.assign({}, t.meta || {}), links: t.links || [], parentId: null,
       progress: (t.progress && progressStagesOf(t.type).includes(t.progress)) ? t.progress : '',
       today: !!t.today, dndUntil: null,
+      estDays: (t.estDays != null && isFinite(Number(t.estDays)) && Number(t.estDays) >= 0) ? Math.round(Number(t.estDays) * 10) / 10 : null,
       createdAt: nowISO(), updatedAt: nowISO()
     };
     db.todos.push(todo);
@@ -1233,6 +1214,10 @@ async function handleApi(req, res, db, u) {
     }
     if (body.peerDev !== undefined) meta.peerDev = body.peerDev || '';
     if (body.peerTest !== undefined) meta.peerTest = body.peerTest || '';
+    if (body.estDays !== undefined) {
+      todo.estDays = (body.estDays != null && body.estDays !== '' && isFinite(Number(body.estDays)) && Number(body.estDays) >= 0)
+        ? Math.round(Number(body.estDays) * 10) / 10 : null;
+    }
     todo.meta = meta;
     todo.updatedAt = nowISO();
     logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'status_changed', by: todo.assigneeId, detail: '编辑待办：' + todo.title });
