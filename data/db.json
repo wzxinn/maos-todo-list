@@ -303,6 +303,33 @@
       "dndUntil": null,
       "createdAt": "2026-09-08T07:21:46.942Z",
       "updatedAt": "2026-09-08T07:51:43.823Z"
+    },
+    {
+      "id": "t6z",
+      "title": "112312US3333",
+      "description": "",
+      "type": "requirement",
+      "priority": "P1",
+      "status": "doing",
+      "assigneeId": "e1",
+      "creatorId": "e1",
+      "dueAt": null,
+      "requirementId": null,
+      "unitId": null,
+      "versionId": null,
+      "tags": [],
+      "meta": {
+        "peerDev": "",
+        "peerTest": "",
+        "verSeries": ""
+      },
+      "links": [],
+      "parentId": null,
+      "progress": "",
+      "today": true,
+      "dndUntil": "2026-09-08T15:29:03.977Z",
+      "createdAt": "2026-09-08T11:28:55.117Z",
+      "updatedAt": "2026-09-08T11:29:03.977Z"
     }
   ],
   "events": [
@@ -2075,6 +2102,35 @@
       "action": "version_updated",
       "by": "e1",
       "detail": "更新版本：7.7.0（名称/版本线/性质/负责人/冻结/发布）"
+    },
+    {
+      "id": "ev70",
+      "at": "2026-09-08T11:28:55.117Z",
+      "entityType": "todo",
+      "entityId": "t6z",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：112312US3333"
+    },
+    {
+      "id": "ev71",
+      "at": "2026-09-08T11:28:57.817Z",
+      "entityType": "todo",
+      "entityId": "t6z",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "todo",
+      "to": "doing",
+      "detail": "开始处理（已加入今日待办）：112312US3333"
+    },
+    {
+      "id": "ev72",
+      "at": "2026-09-08T11:29:03.977Z",
+      "entityType": "todo",
+      "entityId": "t6z",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "开启专注（240 分钟）：112312US3333"
     }
   ],
   "acks": [
