@@ -1252,6 +1252,60 @@ async function handleApi(req, res, db, u) {
     return json(res, 200, { ok: true });
   }
 
+  /* POST /api/unit —— 给某个版本新增迭代 */
+  if (parts[1] === 'unit' && !parts[2]) {
+    const v = db.versions.find(vv => vv.id === body.versionId);
+    if (!v) return json(res, 400, { error: 'version not found' });
+    const name = String(body.name || '').trim();
+    if (!name) return json(res, 400, { error: '迭代名称必填' });
+    const planStart = String(body.planStart || '').trim();
+    const planEnd = String(body.planEnd || '').trim();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(planStart) || !/^\d{4}-\d{2}-\d{2}$/.test(planEnd)) return json(res, 400, { error: '计划开始/结束需为 YYYY-MM-DD' });
+    if (daysBetween(planStart, planEnd) < 0) return json(res, 400, { error: '结束不能早于开始' });
+    const siblings = db.units.filter(u => u.versionId === v.id);
+    const maxIdx = siblings.reduce((m, u) => Math.max(m, u.index || 0), 0);
+    const u = {
+      id: nid('u'), versionId: v.id, name,
+      index: (body.index && body.index !== 'auto') ? Number(body.index) : maxIdx + 1,
+      planStart, planEnd,
+      phases: [ { kind: 'lesson', label: '开发', start: planStart, end: planStart }, { kind: 'exam', label: '转测', start: planEnd, end: planEnd } ],
+      exam: null, createdAt: nowISO()
+    };
+    db.units.push(u);
+    logEvent(db, { entityType: 'unit', entityId: u.id, action: 'unit_created', by: body.by || 'sys', detail: v.name + ' 新增迭代：' + u.name + '（' + planStart + ' ~ ' + planEnd + '）' });
+    saveDb(db);
+    return json(res, 200, { ok: true, id: u.id });
+  }
+
+  /* POST /api/unit/:id/update —— 编辑迭代（名称/计划窗口/顺序） */
+  if (parts[1] === 'unit' && parts[2] && parts[3] === 'update') {
+    const unit = db.units.find(x => x.id === parts[2]);
+    if (!unit) return json(res, 404, { error: 'unit not found' });
+    const touched = [];
+    if (typeof body.name === 'string' && String(body.name).trim()) { unit.name = String(body.name).trim(); touched.push('名称'); }
+    if (typeof body.planStart === 'string' && body.planStart) { unit.planStart = body.planStart; touched.push('开始'); }
+    if (typeof body.planEnd === 'string' && body.planEnd) { unit.planEnd = body.planEnd; touched.push('结束'); }
+    if (body.index != null && body.index !== '') { unit.index = Number(body.index) || 1; touched.push('顺序'); }
+    if (unit.planEnd && unit.planStart && daysBetween(unit.planStart, unit.planEnd) < 0) return json(res, 400, { error: '结束不能早于开始' });
+    if (!touched.length) return json(res, 400, { error: '没有可更新的内容' });
+    const v = db.versions.find(vv => vv.id === unit.versionId);
+    logEvent(db, { entityType: 'unit', entityId: unit.id, action: 'unit_updated', by: body.by || 'sys', detail: (v ? v.name + ' · ' : '') + unit.name + ' 更新：' + touched.join('/') });
+    saveDb(db);
+    return json(res, 200, { ok: true });
+  }
+
+  /* POST /api/unit/:id/remove —— 删除迭代（其下任务/需求解除挂靠） */
+  if (parts[1] === 'unit' && parts[2] && parts[3] === 'remove') {
+    const unit = db.units.find(x => x.id === parts[2]);
+    if (!unit) return json(res, 404, { error: 'unit not found' });
+    db.todos.forEach(t => { if (t.unitId === unit.id) t.unitId = null; });
+    db.requirements.forEach(r => { if (r.unitId === unit.id) r.unitId = null; });
+    db.units = db.units.filter(x => x.id !== unit.id);
+    logEvent(db, { entityType: 'unit', entityId: unit.id, action: 'unit_removed', by: body.by || 'sys', detail: '删除迭代：' + unit.name });
+    saveDb(db);
+    return json(res, 200, { ok: true });
+  }
+
   /* POST /api/unit/:id/exam-schedule —— 给迭代排转测 */
   if (parts[1] === 'unit' && parts[2] && parts[3] === 'exam-schedule') {
     const unit = db.units.find(x => x.id === parts[2]);

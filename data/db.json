@@ -1592,6 +1592,60 @@
       "action": "version_removed",
       "by": "e1",
       "detail": "删除版本：V200R021C20（连同 1 个迭代）"
+    },
+    {
+      "id": "ev5r",
+      "at": "2026-09-08T07:16:40.687Z",
+      "entityType": "version",
+      "entityId": "v5q",
+      "action": "version_created",
+      "by": "sys",
+      "detail": "新增版本：ZZZ临时验证版本（HC · 研发）"
+    },
+    {
+      "id": "ev5t",
+      "at": "2026-09-08T07:16:40.721Z",
+      "entityType": "unit",
+      "entityId": "u5s",
+      "action": "unit_created",
+      "by": "sys",
+      "detail": "ZZZ临时验证版本 新增迭代：B001 · 验证迭代（2026-09-08 ~ 2026-10-08）"
+    },
+    {
+      "id": "ev5u",
+      "at": "2026-09-08T07:16:40.768Z",
+      "entityType": "unit",
+      "entityId": "u5s",
+      "action": "unit_removed",
+      "by": "sys",
+      "detail": "删除迭代：B001 · 验证迭代"
+    },
+    {
+      "id": "ev5v",
+      "at": "2026-09-08T07:16:40.770Z",
+      "entityType": "version",
+      "entityId": "v5q",
+      "action": "version_removed",
+      "by": "sys",
+      "detail": "删除版本：ZZZ临时验证版本（连同 0 个迭代）"
+    },
+    {
+      "id": "ev5x",
+      "at": "2026-09-08T07:16:50.805Z",
+      "entityType": "version",
+      "entityId": "v5w",
+      "action": "version_created",
+      "by": "sys",
+      "detail": "新增版本：ZZZ渲染检查（HC · 研发）"
+    },
+    {
+      "id": "ev5y",
+      "at": "2026-09-08T07:16:52.244Z",
+      "entityType": "version",
+      "entityId": "v5w",
+      "action": "version_removed",
+      "by": "sys",
+      "detail": "删除版本：ZZZ渲染检查（连同 0 个迭代）"
     }
   ],
   "acks": [

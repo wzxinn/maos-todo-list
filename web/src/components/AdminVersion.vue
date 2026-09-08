@@ -74,6 +74,31 @@
             <el-option v-for="e in state.employees" :key="e.id" :label="e.name + ' · ' + e.role" :value="e.id"></el-option>
           </el-select>
         </label>
+
+        <!-- 迭代管理（仅编辑已有版本时出现） -->
+        <div v-if="form.id" class="sep"></div>
+        <div v-if="form.id">
+          <div class="row spread" style="margin-bottom:4px">
+            <span class="small" style="font-weight:700;color:#14355f">版本迭代（{{ unitsOf(form.id).length }}）</span>
+            <span class="hint">添加/删除迭代会即时保存</span>
+          </div>
+          <div class="stack" style="gap:4px" v-if="unitsOf(form.id).length">
+            <div v-for="u in unitsOf(form.id).sort(function(a,b){return (a.index||0)-(b.index||0)})" :key="u.id" class="row small" style="align-items:center;border-bottom:1px dashed #ebeef5;padding:2px 0">
+              <span class="chip mono small" style="border-color:#a0cfff;color:#409eff">{{ u.name }}</span>
+              <span class="muted mono small">{{ u.planStart }} ~ {{ u.planEnd }}</span>
+              <span class="muted small" v-if="u.exam && u.exam.examAt">转测 {{ u.exam.examAt.slice(5) }}</span>
+              <span class="muted small" v-else-if="u.examView && u.examView.examAt">转测 {{ u.examView.examAt.slice(5) }}</span>
+              <span style="flex:1"></span>
+              <button class="act" style="border-color:#f56c6c;color:#f56c6c" @click="delIter(u)">删</button>
+            </div>
+          </div>
+          <div class="row small" style="align-items:center;gap:6px;margin-top:6px">
+            <el-input v-model="iterForm.name" placeholder="迭代名，如 B004 · 特性收尾" style="flex:1.2;min-width:140px"></el-input>
+            <el-date-picker v-model="iterForm.planStart" type="date" value-format="YYYY-MM-DD" placeholder="开始" style="width:120px"></el-date-picker>
+            <el-date-picker v-model="iterForm.planEnd" type="date" value-format="YYYY-MM-DD" placeholder="结束" style="width:120px"></el-date-picker>
+            <button class="go" style="padding:3px 10px" @click="addIter" :disabled="!iterForm.name.trim()">添加迭代</button>
+          </div>
+        </div>
       </div>
       <template #footer>
         <button class="act" @click="dlgOpen=false">取消</button>
@@ -93,7 +118,8 @@ export default {
   data() {
     return {
       dlgOpen: false, saving: false,
-      form: { id: '', name: '', series: 'HC', kind: 'dev', freeze: '', release: '', ownerId: '' }
+      form: { id: '', name: '', series: 'HC', kind: 'dev', freeze: '', release: '', ownerId: '' },
+      iterForm: { name: '', planStart: '', planEnd: '' }
     };
   },
   computed: {
@@ -107,6 +133,40 @@ export default {
   },
   methods: {
     seriesColor(k) { return this.root.seriesColor(k); },
+    /* 某版本下挂的迭代（嵌在 state.versions[].units 中） */
+    unitsOf(versionId) {
+      if (!this.state) return [];
+      var v = this.state.versions.find(function(x){ return x.id === versionId; });
+      return v && v.units ? v.units : [];
+    },
+    addIter() {
+      var self = this;
+      var f = this.iterForm;
+      if (!this.form.id) { this.root.toastMsg('请先保存版本再添加迭代'); return; }
+      if (!f.name.trim() || !f.planStart || !f.planEnd) { this.root.toastMsg('迭代名与开始/结束都要填'); return; }
+      this.root.api('/api/unit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ versionId: this.form.id, name: f.name, planStart: f.planStart, planEnd: f.planEnd, by: this.root.me ? this.root.me.id : 'sys' }) })
+        .then(function(r){
+          if (r && r.ok) {
+            self.root.toastMsg('迭代已添加 ✅');
+            self.iterForm = { name: '', planStart: '', planEnd: '' };
+            self.root.reload();
+          } else {
+            self.root.toastMsg('添加失败：' + (r && r.error ? r.error : ''));
+          }
+        });
+    },
+    delIter(u) {
+      var self = this;
+      ElMessageBox.confirm('确定删除迭代「' + u.name + '」吗？其下任务/需求会解除挂靠保留。', '删除迭代', { confirmButtonText: '删除', cancelButtonText: '取消', type: 'warning' })
+        .then(function(){
+          self.root.api('/api/unit/' + u.id + '/remove', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ by: self.root.me ? self.root.me.id : 'sys' }) })
+            .then(function(r){
+              if (r && r.ok) { self.root.toastMsg('已删除迭代：' + u.name); self.root.reload(); }
+              else self.root.toastMsg('删除失败：' + (r && r.error ? r.error : ''));
+            });
+        })
+        .catch(function(){ /* 取消 */ });
+    },
     ownerNameOf(v) {
       if (!v || !v.ownerId || !this.state) return '';
       var e = this.state.employees.find(function(x){ return x.id === v.ownerId; });

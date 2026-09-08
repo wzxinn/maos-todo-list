@@ -79,19 +79,21 @@ export default {
           silent: true,
           z: 2
         });
-        /* 版本名：条中点上方直接标注（不依赖 hover） */
+        /* 版本名：条中点上方直接标注版本名 + 发布 DDL（不依赖 hover） */
+        var ddLabel = isLive ? '已上线' : ('发布 DDL ' + (v.release || '').slice(5));
         nameData.push({
           value: [mid, lane],
           label: {
             show: true,
-            formatter: isLive ? (v.name + '（上线）') : v.name,
+            formatter: function(){ return '{n|' + v.name + '}\n{d|' + ddLabel + '}'; },
             position: 'top',
             distance: 2,
-            color: '#1f3a5f',
-            fontSize: 12,
-            fontWeight: 700,
-            backgroundColor: 'rgba(255,255,255,.82)',
-            padding: [1, 5],
+            rich: {
+              n: { color: '#1f3a5f', fontSize: 12, fontWeight: 700, lineHeight: 15, padding: [0, 0, 1, 0] },
+              d: { color: isLive ? '#67c23a' : '#e6a23c', fontSize: 10, lineHeight: 13, padding: [0, 0, 1, 0] }
+            },
+            backgroundColor: 'rgba(255,255,255,.85)',
+            padding: [2, 6],
             borderRadius: 3
           }
         });
