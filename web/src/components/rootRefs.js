@@ -34,7 +34,7 @@ export const ROOT_DATA = ['state', 'view', 'meName', 'loginName', 'loginErr', 't
 export const ROOT_COMPUTED = ['adminTabs', 'weekDays', 'stats', 'seriesOpts', 'me', 'cur',
   'myTodos', 'todayTodos', 'openTodos', 'doneTodos', 'todayOverdueCount', 'todayDueCount',
   'filteredTodos', 'allUnits', 'maxTypeCount', 'axis', 'overlaps', 'riskGroups', 'nextIter',
-  'manStats', 'bountyFilters', 'bountyFilterLabel', 'bountyFiltered', 'bountyRank'];
+  'manStats', 'supportBoard', 'bountyFilters', 'bountyFilterLabel', 'bountyFiltered', 'bountyRank'];
 export const ROOT_METHODS = ['logout', 'doLogin', 'goMe', 'goAdmin', 'goTab', 'openEditTodo',
   'startTodo', 'finishTodo', 'riskTodo', 'setStatus', 'shelfTodo', 'delTodo', 'setDnd',
   'dndLeftText', 'editPeer', 'saveEditTodo', 'quickAdd', 'onQuickTypeManual', 'onManualTypePick',

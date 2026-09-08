@@ -71,6 +71,43 @@ export default {
             });
             return { remaining: remaining, monthly: monthly, months: months };
           },
+    /* 成员是否可支撑（管理台 · 全局看板）：
+       专注中（手头有专注任务）/ OnCall 值守 → 排最后；其余按近 5 天待办数 从少到多（越少越可支撑） */
+    supportBoard() {
+            var s = this.state; if (!s) return [];
+            var nowMs = Date.now();
+            var today = s.today;
+            var d = new Date(Date.parse(today + 'T00:00:00Z'));
+            d.setUTCDate(d.getUTCDate() + 5);
+            var plus5 = d.toISOString().slice(0, 10);
+            var rows = s.employees.map(function(e){
+              /* 专注：该成员名下存在 dndUntil 未过期的未完成事项 */
+              var focus = s.todos.some(function(t){
+                return t.assigneeId === e.id && t.status !== 'done' && t.status !== 'canceled' &&
+                       t.dndUntil && new Date(t.dndUntil).getTime() > nowMs;
+              });
+              /* OnCall：排班区间覆盖今天 */
+              var oc = (s.oncalls || []).filter(function(o){ return o.empId === e.id && o.on; });
+              var ocUp = (s.oncalls || []).filter(function(o){ return o.empId === e.id && o.from >= today; }).sort(function(a,b){ return (a.from < b.from ? -1 : 1); });
+              /* 近 5 天内的待办数：未完成且 dueAt ≤ today+5（今天截止也算） */
+              var near5 = s.todos.filter(function(t){
+                return t.assigneeId === e.id && t.status !== 'done' && t.status !== 'canceled' && t.dueAt && t.dueAt <= plus5;
+              }).length;
+              return {
+                emp: e, focus: focus, oncall: oc.length > 0,
+                ocNow: oc[0] || null, ocUp: ocUp[0] || null, near5: near5
+              };
+            });
+            /* 专注/OnCall → 排最后（专注最末）；其余按 near5 升序，平手按名字 */
+            rows.sort(function(a, b){
+              var ka = (a.focus ? 2 : (a.oncall ? 1 : 0));
+              var kb = (b.focus ? 2 : (b.oncall ? 1 : 0));
+              if (ka !== kb) return ka - kb;
+              if (ka === 0) { if (a.near5 !== b.near5) return a.near5 - b.near5; }
+              return (a.emp.name < b.emp.name ? -1 : (a.emp.name > b.emp.name ? 1 : 0));
+            });
+            return rows;
+          },
   },
   methods: {
     renderLoadHeat() {

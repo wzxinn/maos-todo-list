@@ -133,7 +133,7 @@ function nid(p) { return (p || 'id') + (__seq++).toString(36); }
 /* 服务重启后继续沿用库里已有的最大自增序号，避免新 id 与历史数据撞号 */
 function syncSeqFromDb(db) {
   let mx = 1;
-  const cols = [db.todos, db.requirements, db.versions, db.units, db.sites, db.employees, db.events, db.userRisks, db.bounties];
+  const cols = [db.todos, db.requirements, db.versions, db.units, db.sites, db.employees, db.events, db.userRisks, db.bounties, db.oncalls];
   cols.forEach(function(arr){
     (arr || []).forEach(function(o){
       if (!o || !o.id) return;
@@ -149,7 +149,7 @@ function syncSeqFromDb(db) {
 /* ----------------------------- JSON 存储 ----------------------------- */
 
 function defaultDb() {
-  return { seq: 1, mainline: null, employees: [], requirements: [], versions: [], units: [], sites: [], todos: [], events: [], acks: [], userRisks: [], bounties: [] };
+  return { seq: 1, mainline: null, employees: [], requirements: [], versions: [], units: [], sites: [], todos: [], events: [], acks: [], userRisks: [], bounties: [], oncalls: [] };
 }
 
 function loadDb() {
@@ -163,6 +163,7 @@ function loadDb() {
 function migrateDemo(db) {
   db.employees = db.employees || [];
   db.todos = db.todos || [];
+  if (!Array.isArray(db.oncalls)) db.oncalls = [];
   const LEAVES_BY_ID = {
     e2: [{ from: e(8), to: e(10), type: '病假' }],
     e3: [{ from: e(4), to: e(5), type: '年假' }],
@@ -784,10 +785,15 @@ function buildState(db) {
     }
   });
   examsUpcoming.sort((a, b) => (a.date < b.date ? -1 : 1));
+  /* OnCall 排班：输出当前在班标记 + 全量列表（排班表用） */
+  const oncalls = (db.oncalls || []).map(o => {
+    const em = db.employees.find(x => x.id === o.empId);
+    return Object.assign({}, o, { empName: em ? em.name : '', empRole: em ? em.role : '', on: o.from <= todayS && todayS <= o.to });
+  }).sort((a, b) => (a.from < b.from ? -1 : a.from > b.from ? 1 : 0));
   return {
     today: todayS,
     mainline: db.mainline,
-    employees, requirements, versions, todos, events, risks, conflicts, counts, examsUpcoming, bounties,
+    employees, requirements, versions, todos, events, risks, conflicts, counts, examsUpcoming, bounties, oncalls,
     dicts: { types: TODO_TYPES, stages: STAGE_META, statuses: STATUS_META, priorities: PRIORITY_META, actionMeta: ACTION_META, bountyDiffs: BOUNTY_DIFFS }
   };
 }
@@ -861,7 +867,9 @@ function buildPrompt(db) {
   L.push('【成员负载与能力】');
   s.employees.forEach(e => {
     const cap = e.capacity;
-    L.push('  ' + e.name + '(' + e.role + ') 活动任务 ' + e.load.activeTodos + '/' + (cap.maxActiveTodos || '∞') + ' 并行迭代 ' + e.load.activeUnits + '/' + (cap.maxActiveUnits || '∞') + ' 近7天转测 ' + e.load.examsNext7Days + '/' + (cap.maxExamsPerWeek || '∞'));
+    const oc = (s.oncalls || []).filter(o => o.empId === e.id);
+    const ocOn = oc.find(o => o.on);
+    L.push('  ' + e.name + '(' + e.role + ')' + (ocOn ? ' [OnCall 值守中 ' + ocOn.from + '~' + ocOn.to + '：仅低优先支撑]' : (oc.length ? ' [未来 OnCall: ' + oc.map(o => o.from + '~' + o.to).join('、') + ']' : '')) + ' 活动任务 ' + e.load.activeTodos + '/' + (cap.maxActiveTodos || '∞') + ' 并行迭代 ' + e.load.activeUnits + '/' + (cap.maxActiveUnits || '∞') + ' 近7天转测 ' + e.load.examsNext7Days + '/' + (cap.maxExamsPerWeek || '∞'));
     L.push('    忙闲: ' + e.load.busy.map(b => b.date.slice(5) + ':' + (b.load ? b.load + '级' : '-')).join(' '));
     if (e.profile.specialties.length) L.push('    特长: ' + e.profile.specialties.join('、') + '  准时率 ' + e.profile.onTimeRate + '%');
   });
@@ -1571,6 +1579,8 @@ async function handleApi(req, res, db, u) {
     db.todos.forEach(t => {
       if (t.assigneeId === parts[2]) t.assigneeId = null;
     });
+    /* 删除该成员的 OnCall 排班 */
+    if (Array.isArray(db.oncalls)) db.oncalls = db.oncalls.filter(o => o.empId !== parts[2]);
     /* 接取中的悬赏退回重新开放；他发的悬赏保留创建记录 */
     (db.bounties || []).forEach(b => {
       if (b.status === 'claimed' && b.assigneeId === parts[2]) {
@@ -1587,6 +1597,34 @@ async function handleApi(req, res, db, u) {
     db.versions.forEach(v => { if (v.ownerId === parts[2]) v.ownerId = null; });
     db.employees = db.employees.filter(x => x.id !== parts[2]);
     logEvent(db, { entityType: 'employee', entityId: parts[2], action: 'employee_removed', by: body.by || 'sys', detail: '删除成员：' + name });
+    saveDb(db);
+    return json(res, 200, { ok: true });
+  }
+
+  /* POST /api/oncall —— 新增 OnCall 排班（{ empId, from, to }，日期 YYYY-MM-DD，含首尾日） */
+  if (parts[1] === 'oncall' && !parts[2]) {
+    const emp = db.employees.find(x => x.id === body.empId);
+    if (!emp) return json(res, 400, { error: '请选择要排班的成员' });
+    const from = String(body.from || '').trim(), to = String(body.to || '').trim();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(from) || !/^\d{4}-\d{2}-\d{2}$/.test(to)) return json(res, 400, { error: '起止日期需要 YYYY-MM-DD 格式' });
+    if (to < from) return json(res, 400, { error: '结束不能早于开始' });
+    const hit = (db.oncalls || []).find(o => o.empId === emp.id && from <= o.to && o.from <= to);
+    if (hit) return json(res, 400, { error: emp.name + ' 在 ' + from + ' ~ ' + to + ' 与已有排班重叠（' + hit.from + ' ~ ' + hit.to + '）' });
+    const oc = { id: nid('oc'), empId: emp.id, from, to, createdAt: nowISO(), updatedAt: nowISO() };
+    db.oncalls = db.oncalls || [];
+    db.oncalls.push(oc);
+    logEvent(db, { entityType: 'employee', entityId: emp.id, action: 'employee_updated', by: body.by || 'sys', detail: 'OnCall 排班：' + emp.name + ' ' + from + ' ~ ' + to });
+    saveDb(db);
+    return json(res, 200, { ok: true, id: oc.id });
+  }
+
+  /* POST /api/oncall/:id/remove —— 取消一条 OnCall 排班 */
+  if (parts[1] === 'oncall' && parts[2] && parts[3] === 'remove') {
+    const oc = (db.oncalls || []).find(x => x.id === parts[2]);
+    if (!oc) return json(res, 404, { error: 'oncall not found' });
+    const em = db.employees.find(x => x.id === oc.empId);
+    db.oncalls = db.oncalls.filter(x => x.id !== parts[2]);
+    logEvent(db, { entityType: 'employee', entityId: oc.empId, action: 'employee_updated', by: body.by || 'sys', detail: '取消 OnCall 排班：' + (em ? em.name : oc.empId) + ' ' + oc.from + ' ~ ' + oc.to });
     saveDb(db);
     return json(res, 200, { ok: true });
   }

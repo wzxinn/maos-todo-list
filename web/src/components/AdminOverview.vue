@@ -7,6 +7,9 @@
       <div class="stat"><div class="cap">并行版本</div><div class="num">{{ state.versions.length }}</div><div class="hint">多版本并行节奏</div></div>
     </div>
 
+    <!-- 成员是否可支撑 + OnCall 排班管理 -->
+    <admin-support style="margin-bottom:12px"></admin-support>
+
     <!-- 未来 7 天：成员人力管道负载热力图（ECharts） -->
     <div class="panel" style="margin-bottom:12px">
       <h3>成员负载热力图 · 未来 7 天（转测×3 / 截止×2）</h3>
@@ -58,10 +61,12 @@
 </template>
 
 <script>
+import AdminSupport from './AdminSupport.vue';
 import { rc, rm, ROOT_DATA, ROOT_COMPUTED, ROOT_METHODS } from './rootRefs';
 export default {
   name: 'AdminOverview',
   inject: ['root'],
+  components: { AdminSupport },
   computed: rc(ROOT_DATA.concat(ROOT_COMPUTED)),
   methods: rm(ROOT_METHODS)
 };
