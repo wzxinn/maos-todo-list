@@ -2,6 +2,8 @@
   <div>
     <div class="panel" style="margin-bottom:12px">
       <h3>BUG 单导入（JSON → 按责任人进待办）</h3>
+      <div class="hint" style="margin-bottom:8px">把 bug 平台导出的 JSON 粘贴进来（结构形如 <span class="mono">{"data":{"result":[{number, fromVersion:{title}, title, created_by:{name}, owners:[{name}], current_owners:[{name}], return_record:{...}}]}}</span>）。按 <b>current_owners 或 owners</b> 里的姓名匹配成员：同号 BUG 已存在就更新，否则新建「BUG修复」任务。查看地址：<span class="mono">https://clouddevops.huawei.com/#/bug/{number}</span></div>
+      <el-input v-model="bugJson" type="textarea" :rows="4" placeholder='粘贴 bug 平台导出的 JSON，例如：{"data":{"result":[{...}]}}' style="font-family:var(--mono);font-size:12px"></el-input>
       <div class="row spread" style="margin-top:8px">
         <span v-if="bugReport" class="small" :style="bugReport.error ? 'color:#f56c6c' : 'color:#67c23a'">
           共 {{ bugReport.total }} 条：新建 {{ bugReport.created }} · 更新 {{ bugReport.updated }} · 跳过 {{ bugReport.skipped }}
@@ -95,9 +97,9 @@
             </div>
             <div class="row">
               <span class="chip mono small" :style="'color:'+t.statusColor+';border-color:'+t.statusColor">{{ t.statusLabel }}</span>
-              <button class="act op" @click="openEditTodo(t)" title="编辑标题/类型/优先级/截止/版本线/对接人/描述">编辑</button>
-              <button v-for="nt in nextOf(t)" :key="nt.to" class="act op" @click="setStatus(t,nt.to)">{{ nt.label }}</button>
-              <button class="act op" @click="delTodo(t)">删除</button>
+              <button class="act" style="border-color:#0e7490;color:#0e7490" @click="openEditTodo(t)" title="编辑标题/类型/优先级/截止/版本线/对接人/描述">✏️ 编辑</button>
+              <button v-for="nt in nextOf(t)" :key="nt.to" class="act" @click="setStatus(t,nt.to)">{{ nt.label }}</button>
+              <button class="act" style="border-color:#f56c6c;color:#f56c6c" @click="delTodo(t)">删除</button>
             </div>
           </div>
         </div>

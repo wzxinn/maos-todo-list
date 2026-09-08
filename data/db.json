@@ -63,8 +63,8 @@
       "reqNo": "REQ-2101",
       "priority": "P0",
       "status": "developing",
-      "versionId": "v1",
-      "unitId": "u1",
+      "versionId": null,
+      "unitId": null,
       "ownerId": "e1"
     },
     {
@@ -73,8 +73,8 @@
       "reqNo": "REQ-2102",
       "priority": "P1",
       "status": "testing",
-      "versionId": "v1",
-      "unitId": "u2",
+      "versionId": null,
+      "unitId": null,
       "ownerId": null
     },
     {
@@ -83,8 +83,8 @@
       "reqNo": "REQ-2103",
       "priority": "P2",
       "status": "planning",
-      "versionId": "v2",
-      "unitId": "u4",
+      "versionId": null,
+      "unitId": null,
       "ownerId": null
     },
     {
@@ -93,8 +93,8 @@
       "reqNo": "REQ-2104",
       "priority": "P1",
       "status": "developing",
-      "versionId": "v3",
-      "unitId": "u5",
+      "versionId": null,
+      "unitId": null,
       "ownerId": null
     },
     {
@@ -103,419 +103,14 @@
       "reqNo": "REQ-2105",
       "priority": "P2",
       "status": "done",
-      "versionId": "v4",
+      "versionId": null,
       "unitId": null,
       "ownerId": null
     }
   ],
-  "versions": [
-    {
-      "id": "v1",
-      "name": "V200R021C10",
-      "kind": "dev",
-      "series": "HC",
-      "mainlineId": "m1",
-      "freeze": "2026-08-16",
-      "release": "2026-09-25",
-      "milestones": [
-        {
-          "key": "freeze",
-          "label": "需求冻结",
-          "at": "2026-08-16"
-        },
-        {
-          "key": "first_test",
-          "label": "迭代一转测",
-          "at": "2026-08-27"
-        },
-        {
-          "key": "release",
-          "label": "版本发布",
-          "at": "2026-09-25"
-        },
-        {
-          "key": "go_live",
-          "label": "局点全量上线",
-          "at": "2026-10-07"
-        }
-      ],
-      "ownerId": "e1",
-      "completed": false,
-      "updatedAt": "2026-09-08T05:20:27.537Z"
-    },
-    {
-      "id": "v2",
-      "name": "V200R021C20",
-      "kind": "dev",
-      "series": "HCS",
-      "mainlineId": "m1",
-      "freeze": "2026-09-03",
-      "release": "2026-09-27",
-      "milestones": [
-        {
-          "key": "freeze",
-          "label": "需求冻结",
-          "at": "2026-09-03"
-        },
-        {
-          "key": "first_test",
-          "label": "迭代一转测",
-          "at": "2026-09-12"
-        },
-        {
-          "key": "release",
-          "label": "版本发布",
-          "at": "2026-09-27"
-        },
-        {
-          "key": "go_live",
-          "label": "局点全量上线",
-          "at": "2026-10-11"
-        }
-      ],
-      "ownerId": null,
-      "completed": false,
-      "updatedAt": "2026-09-08T05:20:27.539Z"
-    },
-    {
-      "id": "v3",
-      "name": "V200R021C30",
-      "kind": "dev",
-      "series": "HCSO",
-      "mainlineId": "m1",
-      "freeze": "2026-08-28",
-      "release": "2026-10-01",
-      "milestones": [
-        {
-          "key": "freeze",
-          "label": "需求冻结",
-          "at": "2026-08-28"
-        },
-        {
-          "key": "first_test",
-          "label": "迭代一转测",
-          "at": "2026-09-11"
-        },
-        {
-          "key": "release",
-          "label": "版本发布",
-          "at": "2026-10-01"
-        },
-        {
-          "key": "go_live",
-          "label": "局点全量上线",
-          "at": "2026-10-15"
-        }
-      ],
-      "ownerId": null,
-      "completed": false,
-      "updatedAt": "2026-09-08T05:20:27.541Z"
-    },
-    {
-      "id": "v4",
-      "name": "V200R021C10·现网",
-      "kind": "live",
-      "series": "HC",
-      "mainlineId": "m1",
-      "freeze": "2026-07-09",
-      "release": "2026-08-08",
-      "milestones": [
-        {
-          "key": "freeze",
-          "label": "需求冻结",
-          "at": "2026-07-09"
-        },
-        {
-          "key": "first_test",
-          "label": "迭代一转测",
-          "at": "2026-07-24"
-        },
-        {
-          "key": "release",
-          "label": "版本发布",
-          "at": "2026-08-08"
-        },
-        {
-          "key": "go_live",
-          "label": "局点全量上线",
-          "at": "2026-08-13"
-        }
-      ],
-      "ownerId": "e1",
-      "completed": false,
-      "updatedAt": "2026-09-08T05:20:27.543Z"
-    }
-  ],
-  "units": [
-    {
-      "id": "u1",
-      "versionId": "v1",
-      "name": "B001 · 基础框架",
-      "index": 1,
-      "planStart": "2026-08-12",
-      "planEnd": "2026-08-27",
-      "phases": [
-        {
-          "kind": "lesson",
-          "label": "开发",
-          "start": "2026-08-12",
-          "end": "2026-08-18"
-        },
-        {
-          "kind": "homework",
-          "label": "自测",
-          "start": "2026-08-19",
-          "end": "2026-08-21"
-        },
-        {
-          "kind": "review",
-          "label": "回归",
-          "start": "2026-08-22",
-          "end": "2026-08-25"
-        },
-        {
-          "kind": "exam",
-          "label": "转测",
-          "start": "2026-08-27",
-          "end": "2026-08-27"
-        }
-      ],
-      "exam": {
-        "examAt": "2026-08-27",
-        "subject": "HC·B001 转测",
-        "examinees": [
-          "e1"
-        ],
-        "result": "pass",
-        "defectCount": 3,
-        "retakeAt": null,
-        "scheduledAt": "2026-08-26"
-      },
-      "createdAt": "2026-09-07T12:26:33.915Z"
-    },
-    {
-      "id": "u2",
-      "versionId": "v1",
-      "name": "B002 · 特性开发",
-      "index": 2,
-      "planStart": "2026-09-01",
-      "planEnd": "2026-09-12",
-      "phases": [
-        {
-          "kind": "lesson",
-          "label": "开发",
-          "start": "2026-09-01",
-          "end": "2026-09-06"
-        },
-        {
-          "kind": "homework",
-          "label": "自测",
-          "start": "2026-09-07",
-          "end": "2026-09-09"
-        },
-        {
-          "kind": "review",
-          "label": "回归",
-          "start": "2026-09-10",
-          "end": "2026-09-11"
-        },
-        {
-          "kind": "exam",
-          "label": "转测",
-          "start": "2026-09-12",
-          "end": "2026-09-12"
-        }
-      ],
-      "exam": {
-        "examAt": "2026-09-12",
-        "subject": "HC·B002 转测",
-        "examinees": [
-          "e1"
-        ],
-        "result": null,
-        "defectCount": null,
-        "retakeAt": null,
-        "scheduledAt": "2026-09-05"
-      },
-      "createdAt": "2026-09-07T12:26:33.915Z"
-    },
-    {
-      "id": "u3",
-      "versionId": "v1",
-      "name": "B003 · 收尾特性",
-      "index": 3,
-      "planStart": "2026-09-15",
-      "planEnd": "2026-09-26",
-      "phases": [
-        {
-          "kind": "lesson",
-          "label": "开发",
-          "start": "2026-09-15",
-          "end": "2026-09-19"
-        },
-        {
-          "kind": "homework",
-          "label": "自测",
-          "start": "2026-09-20",
-          "end": "2026-09-22"
-        },
-        {
-          "kind": "review",
-          "label": "回归",
-          "start": "2026-09-23",
-          "end": "2026-09-24"
-        },
-        {
-          "kind": "exam",
-          "label": "转测",
-          "start": "2026-09-26",
-          "end": "2026-09-26"
-        }
-      ],
-      "exam": null,
-      "createdAt": "2026-09-07T12:26:33.915Z"
-    },
-    {
-      "id": "u4",
-      "versionId": "v2",
-      "name": "B001 · 控制台",
-      "index": 1,
-      "planStart": "2026-09-05",
-      "planEnd": "2026-09-12",
-      "phases": [
-        {
-          "kind": "lesson",
-          "label": "开发",
-          "start": "2026-09-05",
-          "end": "2026-09-10"
-        },
-        {
-          "kind": "review",
-          "label": "转测准备",
-          "start": "2026-09-11",
-          "end": "2026-09-11"
-        },
-        {
-          "kind": "exam",
-          "label": "转测",
-          "start": "2026-09-12",
-          "end": "2026-09-12"
-        }
-      ],
-      "exam": {
-        "examAt": "2026-09-12",
-        "subject": "HCS·B001 转测",
-        "examinees": [
-          "e1"
-        ],
-        "result": null,
-        "defectCount": null,
-        "retakeAt": null,
-        "scheduledAt": "2026-09-06"
-      },
-      "createdAt": "2026-09-07T12:26:33.915Z"
-    },
-    {
-      "id": "u5",
-      "versionId": "v3",
-      "name": "B001 · 适配底座",
-      "index": 1,
-      "planStart": "2026-09-07",
-      "planEnd": "2026-09-17",
-      "phases": [
-        {
-          "kind": "lesson",
-          "label": "开发",
-          "start": "2026-09-07",
-          "end": "2026-09-13"
-        },
-        {
-          "kind": "homework",
-          "label": "自测",
-          "start": "2026-09-14",
-          "end": "2026-09-15"
-        },
-        {
-          "kind": "review",
-          "label": "回归",
-          "start": "2026-09-16",
-          "end": "2026-09-16"
-        },
-        {
-          "kind": "exam",
-          "label": "转测",
-          "start": "2026-09-17",
-          "end": "2026-09-17"
-        }
-      ],
-      "exam": {
-        "examAt": "2026-09-17",
-        "subject": "HCSO·B001 转测",
-        "examinees": [],
-        "result": null,
-        "defectCount": null,
-        "retakeAt": null,
-        "scheduledAt": "2026-09-10"
-      },
-      "createdAt": "2026-09-07T12:26:33.915Z"
-    },
-    {
-      "id": "u6",
-      "versionId": "v3",
-      "name": "B002 · 集成联调",
-      "index": 2,
-      "planStart": "2026-09-19",
-      "planEnd": "2026-09-29",
-      "phases": [
-        {
-          "kind": "lesson",
-          "label": "开发",
-          "start": "2026-09-19",
-          "end": "2026-09-25"
-        },
-        {
-          "kind": "review",
-          "label": "转测准备",
-          "start": "2026-09-26",
-          "end": "2026-09-28"
-        },
-        {
-          "kind": "exam",
-          "label": "转测",
-          "start": "2026-09-29",
-          "end": "2026-09-29"
-        }
-      ],
-      "exam": null,
-      "createdAt": "2026-09-07T12:26:33.915Z"
-    }
-  ],
-  "sites": [
-    {
-      "id": "s1",
-      "versionId": "v1",
-      "site": "华东 · 上海局点",
-      "env": "现网",
-      "planOnlineAt": "2026-09-25",
-      "actualOnlineAt": null
-    },
-    {
-      "id": "s2",
-      "versionId": "v1",
-      "site": "华南 · 深圳局点",
-      "env": "现网",
-      "planOnlineAt": "2026-10-07",
-      "actualOnlineAt": null
-    },
-    {
-      "id": "s3",
-      "versionId": "v2",
-      "site": "华北 · 北京局点",
-      "env": "现网",
-      "planOnlineAt": "2026-10-11",
-      "actualOnlineAt": null
-    }
-  ],
+  "versions": [],
+  "units": [],
+  "sites": [],
   "todos": [],
   "events": [
     {
@@ -1961,6 +1556,42 @@
       "action": "deleted",
       "by": "e1",
       "detail": "删除任务：迭代一转测缺陷回归闭环"
+    },
+    {
+      "id": "ev5m",
+      "at": "2026-09-08T05:59:16.582Z",
+      "entityType": "version",
+      "entityId": "v4",
+      "action": "version_removed",
+      "by": "e1",
+      "detail": "删除版本：V200R021C10·现网（连同 0 个迭代）"
+    },
+    {
+      "id": "ev5n",
+      "at": "2026-09-08T05:59:18.572Z",
+      "entityType": "version",
+      "entityId": "v1",
+      "action": "version_removed",
+      "by": "e1",
+      "detail": "删除版本：V200R021C10（连同 3 个迭代）"
+    },
+    {
+      "id": "ev5o",
+      "at": "2026-09-08T05:59:20.603Z",
+      "entityType": "version",
+      "entityId": "v3",
+      "action": "version_removed",
+      "by": "e1",
+      "detail": "删除版本：V200R021C30（连同 2 个迭代）"
+    },
+    {
+      "id": "ev5p",
+      "at": "2026-09-08T05:59:22.840Z",
+      "entityType": "version",
+      "entityId": "v2",
+      "action": "version_removed",
+      "by": "e1",
+      "detail": "删除版本：V200R021C20（连同 1 个迭代）"
     }
   ],
   "acks": [
