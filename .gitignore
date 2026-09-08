@@ -1,0 +1,7 @@
+﻿node_modules/
+web/node_modules/
+web/dist/
+*.log
+_pngprobe.js
+_runcheck.js
+db.bak*

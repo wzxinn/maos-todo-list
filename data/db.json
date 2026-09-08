@@ -1,0 +1,2046 @@
+{
+  "seq": 1,
+  "mainline": {
+    "id": "m1",
+    "name": "特性主线",
+    "cadenceDays": 42,
+    "unitTemplate": {
+      "lessonDays": 5,
+      "homeworkDays": 3,
+      "reviewDays": 2,
+      "examDay": 10
+    },
+    "retakeBufferDays": 3,
+    "stageGuide": {
+      "planning": [
+        "需求澄清与范围确认",
+        "特性文档设计",
+        "资料/测试串讲安排"
+      ],
+      "development": [
+        "迭代开发与代码巡检",
+        "自测与联调",
+        "转测评审与用例准备"
+      ],
+      "testing": [
+        "转测执行（准入评审）",
+        "缺陷修复与回归",
+        "复测与验收"
+      ],
+      "release": [
+        "版本归档与发布说明",
+        "局点上线窗口安排",
+        "现网变更执行与监控"
+      ],
+      "maintenance": [
+        "线上问题闭环",
+        "特性开关回收检查",
+        "版本复盘与总结"
+      ]
+    }
+  },
+  "employees": [
+    {
+      "createdAt": "2026-09-07T12:26:33.914Z",
+      "id": "e1",
+      "name": "张伟",
+      "role": "前端开发",
+      "capacity": {
+        "maxActiveUnits": 2,
+        "maxExamsPerWeek": 1,
+        "maxActiveTodos": 5
+      },
+      "leaves": [],
+      "bountyPoints": 98,
+      "bountyDone": 3,
+      "updatedAt": "2026-09-08T01:17:10.574Z"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "r1",
+      "name": "登录体验优化",
+      "reqNo": "REQ-2101",
+      "priority": "P0",
+      "status": "developing",
+      "versionId": "v1",
+      "unitId": "u1",
+      "ownerId": "e1"
+    },
+    {
+      "id": "r2",
+      "name": "巡检报表增强",
+      "reqNo": "REQ-2102",
+      "priority": "P1",
+      "status": "testing",
+      "versionId": "v1",
+      "unitId": "u2",
+      "ownerId": null
+    },
+    {
+      "id": "r3",
+      "name": "特性开关控制台",
+      "reqNo": "REQ-2103",
+      "priority": "P2",
+      "status": "planning",
+      "versionId": "v2",
+      "unitId": "u4",
+      "ownerId": null
+    },
+    {
+      "id": "r4",
+      "name": "HCSO 平台适配增强",
+      "reqNo": "REQ-2104",
+      "priority": "P1",
+      "status": "developing",
+      "versionId": "v3",
+      "unitId": "u5",
+      "ownerId": null
+    },
+    {
+      "id": "r5",
+      "name": "现网巡检报表优化",
+      "reqNo": "REQ-2105",
+      "priority": "P2",
+      "status": "done",
+      "versionId": "v4",
+      "unitId": null,
+      "ownerId": null
+    }
+  ],
+  "versions": [
+    {
+      "id": "v1",
+      "name": "V200R021C10",
+      "kind": "dev",
+      "series": "HC",
+      "mainlineId": "m1",
+      "freeze": "2026-08-16",
+      "release": "2026-09-25",
+      "milestones": [
+        {
+          "key": "freeze",
+          "label": "需求冻结",
+          "at": "2026-08-16"
+        },
+        {
+          "key": "first_test",
+          "label": "迭代一转测",
+          "at": "2026-08-27"
+        },
+        {
+          "key": "release",
+          "label": "版本发布",
+          "at": "2026-09-25"
+        },
+        {
+          "key": "go_live",
+          "label": "局点全量上线",
+          "at": "2026-10-07"
+        }
+      ],
+      "ownerId": "e1",
+      "completed": false,
+      "updatedAt": "2026-09-08T05:20:27.537Z"
+    },
+    {
+      "id": "v2",
+      "name": "V200R021C20",
+      "kind": "dev",
+      "series": "HCS",
+      "mainlineId": "m1",
+      "freeze": "2026-09-03",
+      "release": "2026-09-27",
+      "milestones": [
+        {
+          "key": "freeze",
+          "label": "需求冻结",
+          "at": "2026-09-03"
+        },
+        {
+          "key": "first_test",
+          "label": "迭代一转测",
+          "at": "2026-09-12"
+        },
+        {
+          "key": "release",
+          "label": "版本发布",
+          "at": "2026-09-27"
+        },
+        {
+          "key": "go_live",
+          "label": "局点全量上线",
+          "at": "2026-10-11"
+        }
+      ],
+      "ownerId": null,
+      "completed": false,
+      "updatedAt": "2026-09-08T05:20:27.539Z"
+    },
+    {
+      "id": "v3",
+      "name": "V200R021C30",
+      "kind": "dev",
+      "series": "HCSO",
+      "mainlineId": "m1",
+      "freeze": "2026-08-28",
+      "release": "2026-10-01",
+      "milestones": [
+        {
+          "key": "freeze",
+          "label": "需求冻结",
+          "at": "2026-08-28"
+        },
+        {
+          "key": "first_test",
+          "label": "迭代一转测",
+          "at": "2026-09-11"
+        },
+        {
+          "key": "release",
+          "label": "版本发布",
+          "at": "2026-10-01"
+        },
+        {
+          "key": "go_live",
+          "label": "局点全量上线",
+          "at": "2026-10-15"
+        }
+      ],
+      "ownerId": null,
+      "completed": false,
+      "updatedAt": "2026-09-08T05:20:27.541Z"
+    },
+    {
+      "id": "v4",
+      "name": "V200R021C10·现网",
+      "kind": "live",
+      "series": "HC",
+      "mainlineId": "m1",
+      "freeze": "2026-07-09",
+      "release": "2026-08-08",
+      "milestones": [
+        {
+          "key": "freeze",
+          "label": "需求冻结",
+          "at": "2026-07-09"
+        },
+        {
+          "key": "first_test",
+          "label": "迭代一转测",
+          "at": "2026-07-24"
+        },
+        {
+          "key": "release",
+          "label": "版本发布",
+          "at": "2026-08-08"
+        },
+        {
+          "key": "go_live",
+          "label": "局点全量上线",
+          "at": "2026-08-13"
+        }
+      ],
+      "ownerId": "e1",
+      "completed": false,
+      "updatedAt": "2026-09-08T05:20:27.543Z"
+    }
+  ],
+  "units": [
+    {
+      "id": "u1",
+      "versionId": "v1",
+      "name": "B001 · 基础框架",
+      "index": 1,
+      "planStart": "2026-08-12",
+      "planEnd": "2026-08-27",
+      "phases": [
+        {
+          "kind": "lesson",
+          "label": "开发",
+          "start": "2026-08-12",
+          "end": "2026-08-18"
+        },
+        {
+          "kind": "homework",
+          "label": "自测",
+          "start": "2026-08-19",
+          "end": "2026-08-21"
+        },
+        {
+          "kind": "review",
+          "label": "回归",
+          "start": "2026-08-22",
+          "end": "2026-08-25"
+        },
+        {
+          "kind": "exam",
+          "label": "转测",
+          "start": "2026-08-27",
+          "end": "2026-08-27"
+        }
+      ],
+      "exam": {
+        "examAt": "2026-08-27",
+        "subject": "HC·B001 转测",
+        "examinees": [
+          "e1"
+        ],
+        "result": "pass",
+        "defectCount": 3,
+        "retakeAt": null,
+        "scheduledAt": "2026-08-26"
+      },
+      "createdAt": "2026-09-07T12:26:33.915Z"
+    },
+    {
+      "id": "u2",
+      "versionId": "v1",
+      "name": "B002 · 特性开发",
+      "index": 2,
+      "planStart": "2026-09-01",
+      "planEnd": "2026-09-12",
+      "phases": [
+        {
+          "kind": "lesson",
+          "label": "开发",
+          "start": "2026-09-01",
+          "end": "2026-09-06"
+        },
+        {
+          "kind": "homework",
+          "label": "自测",
+          "start": "2026-09-07",
+          "end": "2026-09-09"
+        },
+        {
+          "kind": "review",
+          "label": "回归",
+          "start": "2026-09-10",
+          "end": "2026-09-11"
+        },
+        {
+          "kind": "exam",
+          "label": "转测",
+          "start": "2026-09-12",
+          "end": "2026-09-12"
+        }
+      ],
+      "exam": {
+        "examAt": "2026-09-12",
+        "subject": "HC·B002 转测",
+        "examinees": [
+          "e1"
+        ],
+        "result": null,
+        "defectCount": null,
+        "retakeAt": null,
+        "scheduledAt": "2026-09-05"
+      },
+      "createdAt": "2026-09-07T12:26:33.915Z"
+    },
+    {
+      "id": "u3",
+      "versionId": "v1",
+      "name": "B003 · 收尾特性",
+      "index": 3,
+      "planStart": "2026-09-15",
+      "planEnd": "2026-09-26",
+      "phases": [
+        {
+          "kind": "lesson",
+          "label": "开发",
+          "start": "2026-09-15",
+          "end": "2026-09-19"
+        },
+        {
+          "kind": "homework",
+          "label": "自测",
+          "start": "2026-09-20",
+          "end": "2026-09-22"
+        },
+        {
+          "kind": "review",
+          "label": "回归",
+          "start": "2026-09-23",
+          "end": "2026-09-24"
+        },
+        {
+          "kind": "exam",
+          "label": "转测",
+          "start": "2026-09-26",
+          "end": "2026-09-26"
+        }
+      ],
+      "exam": null,
+      "createdAt": "2026-09-07T12:26:33.915Z"
+    },
+    {
+      "id": "u4",
+      "versionId": "v2",
+      "name": "B001 · 控制台",
+      "index": 1,
+      "planStart": "2026-09-05",
+      "planEnd": "2026-09-12",
+      "phases": [
+        {
+          "kind": "lesson",
+          "label": "开发",
+          "start": "2026-09-05",
+          "end": "2026-09-10"
+        },
+        {
+          "kind": "review",
+          "label": "转测准备",
+          "start": "2026-09-11",
+          "end": "2026-09-11"
+        },
+        {
+          "kind": "exam",
+          "label": "转测",
+          "start": "2026-09-12",
+          "end": "2026-09-12"
+        }
+      ],
+      "exam": {
+        "examAt": "2026-09-12",
+        "subject": "HCS·B001 转测",
+        "examinees": [
+          "e1"
+        ],
+        "result": null,
+        "defectCount": null,
+        "retakeAt": null,
+        "scheduledAt": "2026-09-06"
+      },
+      "createdAt": "2026-09-07T12:26:33.915Z"
+    },
+    {
+      "id": "u5",
+      "versionId": "v3",
+      "name": "B001 · 适配底座",
+      "index": 1,
+      "planStart": "2026-09-07",
+      "planEnd": "2026-09-17",
+      "phases": [
+        {
+          "kind": "lesson",
+          "label": "开发",
+          "start": "2026-09-07",
+          "end": "2026-09-13"
+        },
+        {
+          "kind": "homework",
+          "label": "自测",
+          "start": "2026-09-14",
+          "end": "2026-09-15"
+        },
+        {
+          "kind": "review",
+          "label": "回归",
+          "start": "2026-09-16",
+          "end": "2026-09-16"
+        },
+        {
+          "kind": "exam",
+          "label": "转测",
+          "start": "2026-09-17",
+          "end": "2026-09-17"
+        }
+      ],
+      "exam": {
+        "examAt": "2026-09-17",
+        "subject": "HCSO·B001 转测",
+        "examinees": [],
+        "result": null,
+        "defectCount": null,
+        "retakeAt": null,
+        "scheduledAt": "2026-09-10"
+      },
+      "createdAt": "2026-09-07T12:26:33.915Z"
+    },
+    {
+      "id": "u6",
+      "versionId": "v3",
+      "name": "B002 · 集成联调",
+      "index": 2,
+      "planStart": "2026-09-19",
+      "planEnd": "2026-09-29",
+      "phases": [
+        {
+          "kind": "lesson",
+          "label": "开发",
+          "start": "2026-09-19",
+          "end": "2026-09-25"
+        },
+        {
+          "kind": "review",
+          "label": "转测准备",
+          "start": "2026-09-26",
+          "end": "2026-09-28"
+        },
+        {
+          "kind": "exam",
+          "label": "转测",
+          "start": "2026-09-29",
+          "end": "2026-09-29"
+        }
+      ],
+      "exam": null,
+      "createdAt": "2026-09-07T12:26:33.915Z"
+    }
+  ],
+  "sites": [
+    {
+      "id": "s1",
+      "versionId": "v1",
+      "site": "华东 · 上海局点",
+      "env": "现网",
+      "planOnlineAt": "2026-09-25",
+      "actualOnlineAt": null
+    },
+    {
+      "id": "s2",
+      "versionId": "v1",
+      "site": "华南 · 深圳局点",
+      "env": "现网",
+      "planOnlineAt": "2026-10-07",
+      "actualOnlineAt": null
+    },
+    {
+      "id": "s3",
+      "versionId": "v2",
+      "site": "华北 · 北京局点",
+      "env": "现网",
+      "planOnlineAt": "2026-10-11",
+      "actualOnlineAt": null
+    }
+  ],
+  "todos": [],
+  "events": [
+    {
+      "id": "ev1",
+      "at": "2026-09-05T20:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t01",
+      "action": "created",
+      "by": "e1",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：登录页 React 组件重构"
+    },
+    {
+      "id": "ev2",
+      "at": "2026-09-05T21:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t02",
+      "action": "created",
+      "by": "e2",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：会话保持与单点登录联调"
+    },
+    {
+      "id": "ev3",
+      "at": "2026-09-05T22:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t03",
+      "action": "created",
+      "by": "e3",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：修复 BUG#8821 登录态丢失"
+    },
+    {
+      "id": "ev4",
+      "at": "2026-09-05T23:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t04",
+      "action": "created",
+      "by": "e4",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：迭代一转测缺陷回归闭环"
+    },
+    {
+      "id": "ev5",
+      "at": "2026-09-06T00:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t05",
+      "action": "created",
+      "by": "e2",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：巡检报表导出 Excel 实现"
+    },
+    {
+      "id": "ev6",
+      "at": "2026-09-06T01:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t06",
+      "action": "created",
+      "by": "e6",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：巡检任务调度服务开发"
+    },
+    {
+      "id": "ev7",
+      "at": "2026-09-06T02:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t07",
+      "action": "created",
+      "by": "e3",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：新登录流程 E2E 用例编写"
+    },
+    {
+      "id": "ev8",
+      "at": "2026-09-06T03:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t08",
+      "action": "created",
+      "by": "e5",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：特性文档 V2 评审修订"
+    },
+    {
+      "id": "ev9",
+      "at": "2026-09-06T04:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t09",
+      "action": "created",
+      "by": "e6",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：巡检报表定时任务回合到 R21C10"
+    },
+    {
+      "id": "eva",
+      "at": "2026-09-06T05:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t10",
+      "action": "created",
+      "by": "e1",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：代码巡检问题整改（内联样式/魔法数字）"
+    },
+    {
+      "id": "evb",
+      "at": "2026-09-06T06:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t11",
+      "action": "created",
+      "by": "e6",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：现网变更：告警阈值调整"
+    },
+    {
+      "id": "evc",
+      "at": "2026-09-06T07:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t12",
+      "action": "created",
+      "by": "e6",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：特性开关：报表模块灰度放量"
+    },
+    {
+      "id": "evd",
+      "at": "2026-09-06T08:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t13",
+      "action": "created",
+      "by": "e4",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：测试环境 V1.2.3 包归档"
+    },
+    {
+      "id": "eve",
+      "at": "2026-09-06T09:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t14",
+      "action": "created",
+      "by": "e3",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：迭代二转测问题收敛日报"
+    },
+    {
+      "id": "evf",
+      "at": "2026-09-06T10:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t15",
+      "action": "created",
+      "by": "e1",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：迭代三：登录数据看板需求开发"
+    },
+    {
+      "id": "evg",
+      "at": "2026-09-06T11:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t16",
+      "action": "created",
+      "by": "e3",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：迭代三：报表性能压测方案"
+    },
+    {
+      "id": "evh",
+      "at": "2026-09-06T12:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t17",
+      "action": "created",
+      "by": "e1",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：特性开关控制台框架搭建"
+    },
+    {
+      "id": "evi",
+      "at": "2026-09-06T13:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t18",
+      "action": "created",
+      "by": "e6",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：开关控制台 API 与权限模型"
+    },
+    {
+      "id": "evj",
+      "at": "2026-09-06T14:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t19",
+      "action": "created",
+      "by": "e2",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：控制台前端页面开发"
+    },
+    {
+      "id": "evk",
+      "at": "2026-09-06T15:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t20",
+      "action": "created",
+      "by": "e5",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：控制台设计评审串讲材料"
+    },
+    {
+      "id": "evl",
+      "at": "2026-09-06T16:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t21",
+      "action": "created",
+      "by": "e1",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：修复 BUG#8890 开关列表刷新闪烁"
+    },
+    {
+      "id": "evm",
+      "at": "2026-09-06T17:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t22",
+      "action": "created",
+      "by": "e5",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：V2 版本资料串讲会议"
+    },
+    {
+      "id": "evn",
+      "at": "2026-09-06T18:26:33.915Z",
+      "entityType": "todo",
+      "entityId": "t23",
+      "action": "created",
+      "by": "e2",
+      "from": null,
+      "to": null,
+      "detail": "创建任务：现网巡检报表优化回执闭环"
+    },
+    {
+      "id": "evo",
+      "at": "2026-08-16T12:26:33.915Z",
+      "entityType": "version",
+      "entityId": "v1",
+      "action": "milestone",
+      "by": "sys",
+      "detail": "里程碑：需求冻结（V200R021C10）"
+    },
+    {
+      "id": "evp",
+      "at": "2026-08-27T12:26:33.915Z",
+      "entityType": "unit",
+      "entityId": "u1",
+      "action": "exam_result",
+      "by": "e3",
+      "detail": "迭代一转测通过（缺陷 3 个已闭环）"
+    },
+    {
+      "id": "evq",
+      "at": "2026-09-05T12:26:33.915Z",
+      "entityType": "exam",
+      "entityId": "u2",
+      "action": "exam_scheduled",
+      "by": "e4",
+      "detail": "迭代二转测已排期：2026-09-12"
+    },
+    {
+      "id": "evr",
+      "at": "2026-09-06T12:26:33.915Z",
+      "entityType": "exam",
+      "entityId": "u4",
+      "action": "exam_scheduled",
+      "by": "e3",
+      "detail": "V2 迭代一转测已排期：2026-09-12"
+    },
+    {
+      "id": "ev1",
+      "at": "2026-09-07T12:35:24.208Z",
+      "entityType": "todo",
+      "entityId": "t15",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "加入今日待办：迭代三：登录数据看板需求开发"
+    },
+    {
+      "id": "ev1",
+      "at": "2026-09-07T12:36:53.852Z",
+      "entityType": "todo",
+      "entityId": "t21",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "加入今日待办：修复 BUG#8890 开关列表刷新闪烁"
+    },
+    {
+      "id": "ev2",
+      "at": "2026-09-07T12:36:56.237Z",
+      "entityType": "todo",
+      "entityId": "t21",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "移出今日待办：修复 BUG#8890 开关列表刷新闪烁"
+    },
+    {
+      "id": "ev2",
+      "at": "2026-09-07T13:17:06.650Z",
+      "entityType": "todo",
+      "entityId": "t1",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：冒烟测试：UI 重构联调"
+    },
+    {
+      "id": "ev3",
+      "at": "2026-09-07T13:17:12.652Z",
+      "entityType": "todo",
+      "entityId": "t1",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "todo",
+      "to": "doing",
+      "detail": "开始处理（已加入今日待办）：冒烟测试：UI 重构联调"
+    },
+    {
+      "id": "ev4",
+      "at": "2026-09-07T13:17:12.711Z",
+      "entityType": "todo",
+      "entityId": "t1",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "doing",
+      "to": "done",
+      "detail": "任务状态：处理中 → 已完成"
+    },
+    {
+      "id": "ev5",
+      "at": "2026-09-07T13:17:12.758Z",
+      "entityType": "todo",
+      "entityId": "t1",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "done",
+      "to": "todo",
+      "detail": "任务状态：已完成 → 待处理"
+    },
+    {
+      "id": "ev6",
+      "at": "2026-09-07T13:17:25.973Z",
+      "entityType": "todo",
+      "entityId": "t1",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "todo",
+      "to": "doing",
+      "detail": "开始处理（已加入今日待办）：冒烟测试：UI 重构联调"
+    },
+    {
+      "id": "ev7",
+      "at": "2026-09-07T13:17:25.987Z",
+      "entityType": "todo",
+      "entityId": "t1",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "doing",
+      "to": "blocked",
+      "detail": "阻塞求助：冒烟测试：UI 重构联调（等李娜联调接口）"
+    },
+    {
+      "id": "ev9",
+      "at": "2026-09-07T13:17:26.037Z",
+      "entityType": "todo",
+      "entityId": "t1",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "上报风险：冒烟测试：UI 重构联调（接口阻塞两天可能压后转测）"
+    },
+    {
+      "id": "eva",
+      "at": "2026-09-07T13:17:26.101Z",
+      "entityType": "todo",
+      "entityId": "t1",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "blocked",
+      "to": "doing",
+      "detail": "开始处理（已加入今日待办）：冒烟测试：UI 重构联调"
+    },
+    {
+      "id": "evb",
+      "at": "2026-09-07T13:17:33.172Z",
+      "entityType": "todo",
+      "entityId": "t1",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新对接人：冒烟测试：UI 重构联调（开发 刘洋 / 测试 赵敏）"
+    },
+    {
+      "id": "evc",
+      "at": "2026-09-07T13:17:33.239Z",
+      "entityType": "todo",
+      "entityId": "t1",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：冒烟测试：UI 重构联调"
+    },
+    {
+      "id": "eve",
+      "at": "2026-09-07T13:18:07.592Z",
+      "entityType": "todo",
+      "entityId": "td",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：转测前 UI 走查（今天做）"
+    },
+    {
+      "id": "evg",
+      "at": "2026-09-07T13:18:07.606Z",
+      "entityType": "todo",
+      "entityId": "tf",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：周报素材整理"
+    },
+    {
+      "id": "ev24",
+      "at": "2026-09-07T13:19:47.731Z",
+      "entityType": "todo",
+      "entityId": "tf",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "todo",
+      "to": "doing",
+      "detail": "开始处理（已加入今日待办）：周报素材整理"
+    },
+    {
+      "id": "ev25",
+      "at": "2026-09-07T13:21:09.011Z",
+      "entityType": "todo",
+      "entityId": "td",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：转测前 UI 走查（今天做）"
+    },
+    {
+      "id": "ev26",
+      "at": "2026-09-07T13:21:09.024Z",
+      "entityType": "todo",
+      "entityId": "tf",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：周报素材整理"
+    },
+    {
+      "id": "ev28",
+      "at": "2026-09-07T13:52:58.131Z",
+      "entityType": "bounty",
+      "entityId": "by27",
+      "action": "bounty_created",
+      "by": "e1",
+      "detail": "发布悬赏（中等·20 分）：冒烟：版本回切演练文档"
+    },
+    {
+      "id": "ev2a",
+      "at": "2026-09-07T13:52:58.212Z",
+      "entityType": "bounty",
+      "entityId": "by27",
+      "action": "bounty_claim",
+      "by": "e3",
+      "detail": "王强 接取悬赏（中等·20 分）：冒烟：版本回切演练文档"
+    },
+    {
+      "id": "ev2b",
+      "at": "2026-09-07T13:52:58.212Z",
+      "entityType": "todo",
+      "entityId": "t29",
+      "action": "created",
+      "by": "e3",
+      "detail": "接取悬赏自动入未完成事项：悬赏：冒烟：版本回切演练文档"
+    },
+    {
+      "id": "ev2c",
+      "at": "2026-09-07T13:53:41.922Z",
+      "entityType": "bounty",
+      "entityId": "by27",
+      "action": "bounty_return",
+      "by": "sys",
+      "detail": "王强 退回悬赏：冒烟：版本回切演练文档"
+    },
+    {
+      "id": "ev2e",
+      "at": "2026-09-07T13:54:04.998Z",
+      "entityType": "bounty",
+      "entityId": "by2",
+      "action": "bounty_claim",
+      "by": "e3",
+      "detail": "王强 接取悬赏（中等·20 分）：老版本特性开关兼容回归自查"
+    },
+    {
+      "id": "ev2f",
+      "at": "2026-09-07T13:54:04.998Z",
+      "entityType": "todo",
+      "entityId": "t2d",
+      "action": "created",
+      "by": "e3",
+      "detail": "接取悬赏自动入未完成事项：悬赏：老版本特性开关兼容回归自查"
+    },
+    {
+      "id": "ev2h",
+      "at": "2026-09-07T13:54:05.020Z",
+      "entityType": "bounty",
+      "entityId": "by1",
+      "action": "bounty_claim",
+      "by": "e1",
+      "detail": "张伟 接取悬赏（攻坚·80 分）：巡检报表导出偶发卡死的根因定位"
+    },
+    {
+      "id": "ev2i",
+      "at": "2026-09-07T13:54:05.020Z",
+      "entityType": "todo",
+      "entityId": "t2g",
+      "action": "created",
+      "by": "e1",
+      "detail": "接取悬赏自动入未完成事项：悬赏：巡检报表导出偶发卡死的根因定位"
+    },
+    {
+      "id": "ev2j",
+      "at": "2026-09-07T13:54:05.099Z",
+      "entityType": "todo",
+      "entityId": "t2g",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "todo",
+      "to": "doing",
+      "detail": "任务状态：待处理 → 处理中"
+    },
+    {
+      "id": "ev2k",
+      "at": "2026-09-07T13:54:05.110Z",
+      "entityType": "bounty",
+      "entityId": "by1",
+      "action": "bounty_done",
+      "by": "e1",
+      "detail": "悬赏完成发放 80 分：巡检报表导出偶发卡死的根因定位"
+    },
+    {
+      "id": "ev2l",
+      "at": "2026-09-07T13:54:05.110Z",
+      "entityType": "todo",
+      "entityId": "t2g",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "doing",
+      "to": "done",
+      "detail": "任务状态：处理中 → 已完成"
+    },
+    {
+      "id": "ev2n",
+      "at": "2026-09-07T13:54:12.026Z",
+      "entityType": "bounty",
+      "entityId": "by2m",
+      "action": "bounty_created",
+      "by": "e1",
+      "detail": "发布悬赏（困难·40 分）：V2 版本联调缺陷清单梳理"
+    },
+    {
+      "id": "ev2o",
+      "at": "2026-09-07T13:55:13.575Z",
+      "entityType": "todo",
+      "entityId": "t2g",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "done",
+      "to": "todo",
+      "detail": "任务状态：已完成 → 待处理"
+    },
+    {
+      "id": "ev2p",
+      "at": "2026-09-07T13:55:18.337Z",
+      "entityType": "todo",
+      "entityId": "t01",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "done",
+      "to": "todo",
+      "detail": "任务状态：已完成 → 待处理"
+    },
+    {
+      "id": "ev2r",
+      "at": "2026-09-07T13:55:54.412Z",
+      "entityType": "todo",
+      "entityId": "t2q",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：aaaaaaaa"
+    },
+    {
+      "id": "ev2t",
+      "at": "2026-09-07T14:06:51.966Z",
+      "entityType": "bounty",
+      "entityId": "by2m",
+      "action": "bounty_claim",
+      "by": "e1",
+      "detail": "张伟 接取悬赏（困难·40 分）：V2 版本联调缺陷清单梳理"
+    },
+    {
+      "id": "ev2u",
+      "at": "2026-09-07T14:06:51.966Z",
+      "entityType": "todo",
+      "entityId": "t2s",
+      "action": "created",
+      "by": "e1",
+      "detail": "接取悬赏自动入未完成事项：悬赏：V2 版本联调缺陷清单梳理"
+    },
+    {
+      "id": "ev2v",
+      "at": "2026-09-07T14:06:52.037Z",
+      "entityType": "bounty",
+      "entityId": "by2m",
+      "action": "bounty_return",
+      "by": "sys",
+      "detail": "张伟 退回悬赏：V2 版本联调缺陷清单梳理"
+    },
+    {
+      "id": "ev2x",
+      "at": "2026-09-07T14:10:36.554Z",
+      "entityType": "todo",
+      "entityId": "t2w",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：编辑冒烟：特性开关帮助文案"
+    },
+    {
+      "id": "ev2y",
+      "at": "2026-09-07T14:10:36.649Z",
+      "entityType": "todo",
+      "entityId": "t2w",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "编辑待办：编辑冒烟（已改标题）"
+    },
+    {
+      "id": "ev2z",
+      "at": "2026-09-07T14:10:36.740Z",
+      "entityType": "todo",
+      "entityId": "t2w",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：编辑冒烟（已改标题）"
+    },
+    {
+      "id": "ev30",
+      "at": "2026-09-07T14:11:05.270Z",
+      "entityType": "todo",
+      "entityId": "t15",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "编辑待办：迭代三：登录数据看板需求开发"
+    },
+    {
+      "id": "ev31",
+      "at": "2026-09-07T14:16:36.396Z",
+      "entityType": "todo",
+      "entityId": "t15",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "编辑待办：迭代三：登录数据看板需求开发"
+    },
+    {
+      "id": "ev33",
+      "at": "2026-09-07T14:20:21.346Z",
+      "entityType": "todo",
+      "entityId": "t32",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：描述展示冒烟：转测用例准备"
+    },
+    {
+      "id": "ev35",
+      "at": "2026-09-07T14:20:21.361Z",
+      "entityType": "todo",
+      "entityId": "t34",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：描述冒烟-未完成池"
+    },
+    {
+      "id": "ev36",
+      "at": "2026-09-07T14:21:04.950Z",
+      "entityType": "todo",
+      "entityId": "t32",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：描述展示冒烟：转测用例准备"
+    },
+    {
+      "id": "ev37",
+      "at": "2026-09-07T14:21:04.961Z",
+      "entityType": "todo",
+      "entityId": "t34",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：描述冒烟-未完成池"
+    },
+    {
+      "id": "ev39",
+      "at": "2026-09-07T14:29:21.156Z",
+      "entityType": "todo",
+      "entityId": "t38",
+      "action": "created",
+      "by": "e1",
+      "detail": "创建任务：BUG202223123"
+    },
+    {
+      "id": "ev3a",
+      "at": "2026-09-07T14:29:25.242Z",
+      "entityType": "todo",
+      "entityId": "t2q",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：aaaaaaaa"
+    },
+    {
+      "id": "ev3c",
+      "at": "2026-09-08T01:15:08.997Z",
+      "entityType": "employee",
+      "entityId": "e3b",
+      "action": "employee_created",
+      "by": "sys",
+      "detail": "新增成员：???A（????）"
+    },
+    {
+      "id": "ev3d",
+      "at": "2026-09-08T01:15:09.045Z",
+      "entityType": "employee",
+      "entityId": "e3b",
+      "action": "employee_updated",
+      "by": "e1",
+      "detail": "更新成员：姓名：???A → ???B；角色：????"
+    },
+    {
+      "id": "ev3e",
+      "at": "2026-09-08T01:15:09.081Z",
+      "entityType": "employee",
+      "entityId": "e3b",
+      "action": "employee_removed",
+      "by": "sys",
+      "detail": "删除成员：???B"
+    },
+    {
+      "id": "ev3f",
+      "at": "2026-09-08T01:17:10.551Z",
+      "entityType": "employee",
+      "entityId": "e1",
+      "action": "employee_updated",
+      "by": "e1",
+      "detail": "更新成员：姓名：张伟 → 真实姓名甲"
+    },
+    {
+      "id": "ev3g",
+      "at": "2026-09-08T01:17:10.574Z",
+      "entityType": "employee",
+      "entityId": "e1",
+      "action": "employee_updated",
+      "by": "e1",
+      "detail": "更新成员：姓名：真实姓名甲 → 张伟"
+    },
+    {
+      "id": "ev3i",
+      "at": "2026-09-08T01:28:38.709Z",
+      "entityType": "employee",
+      "entityId": "e3h",
+      "action": "employee_created",
+      "by": "sys",
+      "detail": "新增成员：?????（????）"
+    },
+    {
+      "id": "ev3j",
+      "at": "2026-09-08T01:28:38.752Z",
+      "entityType": "employee",
+      "entityId": "e3h",
+      "action": "employee_updated",
+      "by": "sys",
+      "detail": "更新成员：姓名：????? → ?????B；角色：????"
+    },
+    {
+      "id": "ev3k",
+      "at": "2026-09-08T01:28:38.755Z",
+      "entityType": "employee",
+      "entityId": "e3h",
+      "action": "employee_removed",
+      "by": "sys",
+      "detail": "删除成员：?????B"
+    },
+    {
+      "id": "ev3l",
+      "at": "2026-09-08T04:25:45.309Z",
+      "entityType": "todo",
+      "entityId": "t15",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：未开始（迭代三：登录数据看板需求开发）"
+    },
+    {
+      "id": "ev3m",
+      "at": "2026-09-08T04:26:02.763Z",
+      "entityType": "todo",
+      "entityId": "t15",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：代码开发（迭代三：登录数据看板需求开发）"
+    },
+    {
+      "id": "ev3n",
+      "at": "2026-09-08T04:26:02.808Z",
+      "entityType": "todo",
+      "entityId": "t15",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：未开始（迭代三：登录数据看板需求开发）"
+    },
+    {
+      "id": "ev3o",
+      "at": "2026-09-08T04:36:13.104Z",
+      "entityType": "todo",
+      "entityId": "t15",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：方案设计（迭代三：登录数据看板需求开发）"
+    },
+    {
+      "id": "ev3p",
+      "at": "2026-09-08T04:36:13.661Z",
+      "entityType": "todo",
+      "entityId": "t15",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：方案评审（迭代三：登录数据看板需求开发）"
+    },
+    {
+      "id": "ev3q",
+      "at": "2026-09-08T04:36:14.149Z",
+      "entityType": "todo",
+      "entityId": "t15",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：等交互稿（迭代三：登录数据看板需求开发）"
+    },
+    {
+      "id": "ev3r",
+      "at": "2026-09-08T04:37:16.428Z",
+      "entityType": "todo",
+      "entityId": "t01",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：双端联调（登录页 React 组件重构）"
+    },
+    {
+      "id": "ev3s",
+      "at": "2026-09-08T04:37:16.446Z",
+      "entityType": "todo",
+      "entityId": "t01",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：未开始（登录页 React 组件重构）"
+    },
+    {
+      "id": "ev3t",
+      "at": "2026-09-08T04:39:50.852Z",
+      "entityType": "todo",
+      "entityId": "t04",
+      "action": "status_changed",
+      "by": "e4",
+      "detail": "更新进度：修复中（迭代一转测缺陷回归闭环）"
+    },
+    {
+      "id": "ev3u",
+      "at": "2026-09-08T04:39:50.863Z",
+      "entityType": "todo",
+      "entityId": "t04",
+      "action": "status_changed",
+      "by": "e4",
+      "detail": "更新进度：未开始（迭代一转测缺陷回归闭环）"
+    },
+    {
+      "id": "ev3w",
+      "at": "2026-09-08T04:46:58.550Z",
+      "entityType": "todo",
+      "entityId": "t10",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "上报风险：代码巡检问题整改（内联样式/魔法数字）（测试：演示风险卡配色，稍后清除）"
+    },
+    {
+      "id": "ev3y",
+      "at": "2026-09-08T04:59:08.356Z",
+      "entityType": "version",
+      "entityId": "v3x",
+      "action": "version_created",
+      "by": "e1",
+      "detail": "新增版本：V200R021C40（HCS · 研发）"
+    },
+    {
+      "id": "ev3z",
+      "at": "2026-09-08T04:59:08.424Z",
+      "entityType": "version",
+      "entityId": "v3x",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C40·二期（名称/负责人）"
+    },
+    {
+      "id": "ev41",
+      "at": "2026-09-08T04:59:16.292Z",
+      "entityType": "version",
+      "entityId": "v40",
+      "action": "version_created",
+      "by": "e1",
+      "detail": "新增版本：V200R021C41（HCS · 研发）"
+    },
+    {
+      "id": "ev42",
+      "at": "2026-09-08T04:59:16.335Z",
+      "entityType": "version",
+      "entityId": "v40",
+      "action": "version_removed",
+      "by": "e1",
+      "detail": "删除版本：V200R021C41"
+    },
+    {
+      "id": "ev43",
+      "at": "2026-09-08T04:59:32.090Z",
+      "entityType": "version",
+      "entityId": "v3x",
+      "action": "version_removed",
+      "by": "sys",
+      "detail": "删除版本：V200R021C40·二期"
+    },
+    {
+      "id": "ev44",
+      "at": "2026-09-08T04:59:44.284Z",
+      "entityType": "todo",
+      "entityId": "t10",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "更新进度：双端联调（代码巡检问题整改（内联样式/魔法数字））"
+    },
+    {
+      "id": "ev45",
+      "at": "2026-09-08T05:03:06.560Z",
+      "entityType": "todo",
+      "entityId": "t17",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "开启专注（30 分钟）：特性开关控制台框架搭建"
+    },
+    {
+      "id": "ev46",
+      "at": "2026-09-08T05:03:08.346Z",
+      "entityType": "todo",
+      "entityId": "t17",
+      "action": "status_changed",
+      "by": "e1",
+      "detail": "结束专注：特性开关控制台框架搭建"
+    },
+    {
+      "id": "ev47",
+      "at": "2026-09-08T05:03:49.770Z",
+      "entityType": "employee",
+      "entityId": "e2",
+      "action": "employee_updated",
+      "by": "sys",
+      "detail": "更新成员头像：李娜"
+    },
+    {
+      "id": "ev48",
+      "at": "2026-09-08T05:03:49.815Z",
+      "entityType": "employee",
+      "entityId": "e2",
+      "action": "employee_updated",
+      "by": "sys",
+      "detail": "更新成员头像：李娜"
+    },
+    {
+      "id": "ev49",
+      "at": "2026-09-08T05:18:06.334Z",
+      "entityType": "version",
+      "entityId": "v3",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C30（标记完成）"
+    },
+    {
+      "id": "ev4a",
+      "at": "2026-09-08T05:18:06.417Z",
+      "entityType": "version",
+      "entityId": "v3",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C30（恢复进行）"
+    },
+    {
+      "id": "ev4b",
+      "at": "2026-09-08T05:18:33.555Z",
+      "entityType": "todo",
+      "entityId": "t01",
+      "action": "status_changed",
+      "by": "e1",
+      "from": "todo",
+      "to": "doing",
+      "detail": "任务状态：待处理 → 处理中"
+    },
+    {
+      "id": "ev4c",
+      "at": "2026-09-08T05:19:22.858Z",
+      "entityType": "todo",
+      "entityId": "t13",
+      "action": "status_changed",
+      "by": "e4",
+      "from": "todo",
+      "to": "doing",
+      "detail": "任务状态：待处理 → 处理中"
+    },
+    {
+      "id": "ev4d",
+      "at": "2026-09-08T05:19:32.959Z",
+      "entityType": "todo",
+      "entityId": "t13",
+      "action": "status_changed",
+      "by": "e4",
+      "from": "doing",
+      "to": "done",
+      "detail": "任务状态：处理中 → 已完成"
+    },
+    {
+      "id": "ev4e",
+      "at": "2026-09-08T05:19:32.996Z",
+      "entityType": "todo",
+      "entityId": "t13",
+      "action": "status_changed",
+      "by": "e4",
+      "from": "done",
+      "to": "todo",
+      "detail": "任务状态：已完成 → 待处理"
+    },
+    {
+      "id": "ev4f",
+      "at": "2026-09-08T05:20:16.142Z",
+      "entityType": "version",
+      "entityId": "v2",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C20（标记完成）"
+    },
+    {
+      "id": "ev4g",
+      "at": "2026-09-08T05:20:17.554Z",
+      "entityType": "version",
+      "entityId": "v2",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C20（恢复进行）"
+    },
+    {
+      "id": "ev4h",
+      "at": "2026-09-08T05:20:26.126Z",
+      "entityType": "version",
+      "entityId": "v1",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C10（标记完成）"
+    },
+    {
+      "id": "ev4i",
+      "at": "2026-09-08T05:20:26.160Z",
+      "entityType": "version",
+      "entityId": "v2",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C20（标记完成）"
+    },
+    {
+      "id": "ev4j",
+      "at": "2026-09-08T05:20:26.162Z",
+      "entityType": "version",
+      "entityId": "v3",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C30（标记完成）"
+    },
+    {
+      "id": "ev4k",
+      "at": "2026-09-08T05:20:26.164Z",
+      "entityType": "version",
+      "entityId": "v4",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C10·现网（标记完成）"
+    },
+    {
+      "id": "ev4l",
+      "at": "2026-09-08T05:20:27.537Z",
+      "entityType": "version",
+      "entityId": "v1",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C10（恢复进行）"
+    },
+    {
+      "id": "ev4m",
+      "at": "2026-09-08T05:20:27.539Z",
+      "entityType": "version",
+      "entityId": "v2",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C20（恢复进行）"
+    },
+    {
+      "id": "ev4n",
+      "at": "2026-09-08T05:20:27.541Z",
+      "entityType": "version",
+      "entityId": "v3",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C30（恢复进行）"
+    },
+    {
+      "id": "ev4o",
+      "at": "2026-09-08T05:20:27.543Z",
+      "entityType": "version",
+      "entityId": "v4",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：V200R021C10·现网（恢复进行）"
+    },
+    {
+      "id": "ev4p",
+      "at": "2026-09-08T05:38:58.742Z",
+      "entityType": "todo",
+      "entityId": "t19",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：控制台前端页面开发"
+    },
+    {
+      "id": "ev4q",
+      "at": "2026-09-08T05:39:00.495Z",
+      "entityType": "todo",
+      "entityId": "t05",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：巡检报表导出 Excel 实现"
+    },
+    {
+      "id": "ev4r",
+      "at": "2026-09-08T05:39:02.141Z",
+      "entityType": "todo",
+      "entityId": "t02",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：会话保持与单点登录联调"
+    },
+    {
+      "id": "ev4s",
+      "at": "2026-09-08T05:39:03.805Z",
+      "entityType": "todo",
+      "entityId": "t23",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：现网巡检报表优化回执闭环"
+    },
+    {
+      "id": "ev4t",
+      "at": "2026-09-08T05:44:05.623Z",
+      "entityType": "employee",
+      "entityId": "e2",
+      "action": "employee_removed",
+      "by": "e1",
+      "detail": "删除成员：李娜"
+    },
+    {
+      "id": "ev4u",
+      "at": "2026-09-08T05:56:38.226Z",
+      "entityType": "employee",
+      "entityId": "e6",
+      "action": "employee_removed",
+      "by": "e1",
+      "detail": "删除成员：刘洋"
+    },
+    {
+      "id": "ev4v",
+      "at": "2026-09-08T05:56:40.955Z",
+      "entityType": "employee",
+      "entityId": "e5",
+      "action": "employee_removed",
+      "by": "e1",
+      "detail": "删除成员：陈晨"
+    },
+    {
+      "id": "ev4w",
+      "at": "2026-09-08T05:56:43.217Z",
+      "entityType": "employee",
+      "entityId": "e4",
+      "action": "employee_removed",
+      "by": "e1",
+      "detail": "删除成员：赵敏"
+    },
+    {
+      "id": "ev4x",
+      "at": "2026-09-08T05:56:44.970Z",
+      "entityType": "employee",
+      "entityId": "e3",
+      "action": "employee_removed",
+      "by": "e1",
+      "detail": "删除成员：王强"
+    },
+    {
+      "id": "ev4y",
+      "at": "2026-09-08T05:58:21.712Z",
+      "entityType": "todo",
+      "entityId": "t16",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：迭代三：报表性能压测方案"
+    },
+    {
+      "id": "ev4z",
+      "at": "2026-09-08T05:58:23.455Z",
+      "entityType": "todo",
+      "entityId": "t15",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：迭代三：登录数据看板需求开发"
+    },
+    {
+      "id": "ev50",
+      "at": "2026-09-08T05:58:25.031Z",
+      "entityType": "todo",
+      "entityId": "t14",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：迭代二转测问题收敛日报"
+    },
+    {
+      "id": "ev51",
+      "at": "2026-09-08T05:58:26.527Z",
+      "entityType": "todo",
+      "entityId": "t21",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：修复 BUG#8890 开关列表刷新闪烁"
+    },
+    {
+      "id": "ev52",
+      "at": "2026-09-08T05:58:28.127Z",
+      "entityType": "todo",
+      "entityId": "t08",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：特性文档 V2 评审修订"
+    },
+    {
+      "id": "ev53",
+      "at": "2026-09-08T05:58:29.576Z",
+      "entityType": "todo",
+      "entityId": "t20",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：控制台设计评审串讲材料"
+    },
+    {
+      "id": "ev54",
+      "at": "2026-09-08T05:58:31.025Z",
+      "entityType": "todo",
+      "entityId": "t07",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：新登录流程 E2E 用例编写"
+    },
+    {
+      "id": "ev55",
+      "at": "2026-09-08T05:58:34.935Z",
+      "entityType": "todo",
+      "entityId": "t38",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：BUG202223123"
+    },
+    {
+      "id": "ev56",
+      "at": "2026-09-08T05:58:36.785Z",
+      "entityType": "todo",
+      "entityId": "t2s",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：悬赏：V2 版本联调缺陷清单梳理"
+    },
+    {
+      "id": "ev57",
+      "at": "2026-09-08T05:58:39.088Z",
+      "entityType": "todo",
+      "entityId": "t2g",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：悬赏：巡检报表导出偶发卡死的根因定位"
+    },
+    {
+      "id": "ev58",
+      "at": "2026-09-08T05:58:40.952Z",
+      "entityType": "todo",
+      "entityId": "t2d",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：悬赏：老版本特性开关兼容回归自查"
+    },
+    {
+      "id": "ev59",
+      "at": "2026-09-08T05:58:42.753Z",
+      "entityType": "todo",
+      "entityId": "t29",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：悬赏：冒烟：版本回切演练文档"
+    },
+    {
+      "id": "ev5a",
+      "at": "2026-09-08T05:58:44.658Z",
+      "entityType": "todo",
+      "entityId": "t03",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：修复 BUG#8821 登录态丢失"
+    },
+    {
+      "id": "ev5b",
+      "at": "2026-09-08T05:58:46.280Z",
+      "entityType": "todo",
+      "entityId": "t01",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：登录页 React 组件重构"
+    },
+    {
+      "id": "ev5c",
+      "at": "2026-09-08T05:58:48.025Z",
+      "entityType": "todo",
+      "entityId": "t22",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：V2 版本资料串讲会议"
+    },
+    {
+      "id": "ev5d",
+      "at": "2026-09-08T05:58:51.545Z",
+      "entityType": "todo",
+      "entityId": "t17",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：特性开关控制台框架搭建"
+    },
+    {
+      "id": "ev5e",
+      "at": "2026-09-08T05:58:54.114Z",
+      "entityType": "todo",
+      "entityId": "t18",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：开关控制台 API 与权限模型"
+    },
+    {
+      "id": "ev5f",
+      "at": "2026-09-08T05:58:56.050Z",
+      "entityType": "todo",
+      "entityId": "t06",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：巡检任务调度服务开发"
+    },
+    {
+      "id": "ev5g",
+      "at": "2026-09-08T05:58:58.042Z",
+      "entityType": "todo",
+      "entityId": "t10",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：代码巡检问题整改（内联样式/魔法数字）"
+    },
+    {
+      "id": "ev5h",
+      "at": "2026-09-08T05:58:59.746Z",
+      "entityType": "todo",
+      "entityId": "t11",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：现网变更：告警阈值调整"
+    },
+    {
+      "id": "ev5i",
+      "at": "2026-09-08T05:59:01.466Z",
+      "entityType": "todo",
+      "entityId": "t13",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：测试环境 V1.2.3 包归档"
+    },
+    {
+      "id": "ev5j",
+      "at": "2026-09-08T05:59:03.212Z",
+      "entityType": "todo",
+      "entityId": "t12",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：特性开关：报表模块灰度放量"
+    },
+    {
+      "id": "ev5k",
+      "at": "2026-09-08T05:59:04.851Z",
+      "entityType": "todo",
+      "entityId": "t09",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：巡检报表定时任务回合到 R21C10"
+    },
+    {
+      "id": "ev5l",
+      "at": "2026-09-08T05:59:06.410Z",
+      "entityType": "todo",
+      "entityId": "t04",
+      "action": "deleted",
+      "by": "e1",
+      "detail": "删除任务：迭代一转测缺陷回归闭环"
+    }
+  ],
+  "acks": [
+    "ur8",
+    "rk_delay_t08_21",
+    "rk_delay_t14_20",
+    "rk_delay_t15_24",
+    "rk_delay_t16_22",
+    "rk_delay_t19_18",
+    "rk_delay_t20_20",
+    "rk_delay_t21_29",
+    "rk_delay_t05_24",
+    "rk_delay_t06_19",
+    "rk_delay_t07_23",
+    "rk_delay_t11_21",
+    "rk_delay_t12_23",
+    "rk_delay_t17_20",
+    "rk_delay_t18_24"
+  ],
+  "userRisks": [
+    {
+      "id": "ur8",
+      "level": "high",
+      "kind": "user_report",
+      "title": "待办上报风险",
+      "message": "「冒烟测试：UI 重构联调」上报风险：接口阻塞两天可能压后转测",
+      "suggestion": "跟进处理中任务的风险，必要时调整排期或升级求助",
+      "entityType": "todo",
+      "entityId": "t1",
+      "by": "e1",
+      "at": "2026-09-07T13:17:26.037Z"
+    }
+  ],
+  "bounties": [
+    {
+      "id": "by1",
+      "title": "巡检报表导出偶发卡死的根因定位",
+      "desc": "复现后给出根因与修复方案，注明影响面。",
+      "type": "bug",
+      "diff": "expert",
+      "points": 80,
+      "status": "done",
+      "assigneeId": "e1",
+      "claimedAt": "2026-09-07T13:54:05.020Z",
+      "doneAt": "2026-09-07T13:54:05.110Z",
+      "createdBy": "e1",
+      "createdAt": "2026-09-07T13:53:53.398Z",
+      "updatedAt": "2026-09-07T13:54:05.110Z"
+    },
+    {
+      "id": "by2",
+      "title": "老版本特性开关兼容回归自查",
+      "desc": "把近三个月新增的开关在老版本上过一遍，输出兼容清单。",
+      "type": "codeReview",
+      "diff": "medium",
+      "points": 20,
+      "status": "open",
+      "assigneeId": null,
+      "claimedAt": null,
+      "doneAt": null,
+      "createdBy": "e1",
+      "createdAt": "2026-09-07T13:53:53.398Z",
+      "updatedAt": "2026-09-07T13:54:04.998Z"
+    },
+    {
+      "id": "by2m",
+      "title": "V2 版本联调缺陷清单梳理",
+      "desc": "把开关控制台联调期的缺陷按优先级整成一份可排期清单。",
+      "type": "bug",
+      "diff": "hard",
+      "points": 40,
+      "status": "open",
+      "assigneeId": null,
+      "claimedAt": null,
+      "doneAt": null,
+      "createdBy": "e1",
+      "createdAt": "2026-09-07T13:54:12.026Z",
+      "updatedAt": "2026-09-07T14:06:52.037Z"
+    }
+  ],
+  "__seededBounty": true,
+  "__mig2": true
+}
