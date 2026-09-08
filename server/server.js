@@ -1232,16 +1232,34 @@ async function handleApi(req, res, db, u) {
     return json(res, 200, { ok: true });
   }
 
-  /* POST /api/todo/:id/shelf —— 暂时搁置：从今日待办移出，回到「未完成事项」 */
+  /* POST /api/todo/:id/shelf —— 暂时搁置：处理中的单子暂停，从今日待办移出回到「未完成事项」 */
   if (parts[1] === 'todo' && parts[2] && parts[3] === 'shelf') {
     const todo = db.todos.find(x => x.id === parts[2]);
     if (!todo) return json(res, 404, { error: 'todo not found' });
-    if (todo.status !== 'todo') return json(res, 400, { error: '只有未开始的单子能暂时搁置（当前 ' + todo.status + '）' });
+    if (!['todo', 'doing'].includes(todo.status)) return json(res, 400, { error: '只有未开始/处理中的单子能暂时搁置（当前 ' + todo.status + '）' });
+    const was = todo.status;
+    if (todo.status === 'doing') todo.status = 'todo';   /* 处理中搁置 → 回到未开始，让它在「未完成事项」出现 */
     todo.today = false;
     todo.updatedAt = nowISO();
-    logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'status_changed', by: todo.assigneeId, detail: '暂时搁置（移出今日待办）：' + todo.title });
+    logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'status_changed', by: todo.assigneeId, from: was, to: todo.status, detail: '暂时搁置（移出今日待办，回到未完成事项）：' + todo.title });
     saveDb(db);
     return json(res, 200, { ok: true });
+  }
+
+  /* POST /api/todo/:id/transfer —— 转交：把任务负责人改给别人，状态/今日标记原样保留（对方直接接手） */
+  if (parts[1] === 'todo' && parts[2] && parts[3] === 'transfer') {
+    const todo = db.todos.find(x => x.id === parts[2]);
+    if (!todo) return json(res, 404, { error: 'todo not found' });
+    const to = String(body.to || body.assigneeId || '').trim();
+    const emp = db.employees.find(x => x.id === to);
+    if (!emp) return json(res, 400, { error: '请选择要转交给的成员' });
+    if (todo.assigneeId === emp.id) return json(res, 400, { error: '这条本来就是他负责的，不需要转交' });
+    const fromEmp = db.employees.find(x => x.id === todo.assigneeId);
+    todo.assigneeId = emp.id;
+    todo.updatedAt = nowISO();
+    logEvent(db, { entityType: 'todo', entityId: todo.id, action: 'todo_transfer', by: body.by || todo.assigneeId, from: fromEmp ? fromEmp.id : null, to: emp.id, detail: '转交任务：' + todo.title + '（' + (fromEmp ? fromEmp.name : '?') + ' → ' + emp.name + '）' });
+    saveDb(db);
+    return json(res, 200, { ok: true, assigneeName: emp.name });
   }
 
   /* POST /api/todo/:id/start —— 开始处理：未开始/评审中的单子转「处理中」，并自动加入今日待办 */

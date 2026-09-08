@@ -67,6 +67,14 @@
       </div>
 
       <!-- foot：操作区 -->
+      <div v-if="xferOpen" class="xfer-row row small">
+        <span class="muted small" style="font-weight:700;color:#14355f">转交给：</span>
+        <template v-if="xferCandidates.length">
+          <button v-for="e in xferCandidates" :key="e.id" class="act op" @click="transferTodo(t, e)" :title="'转给 ' + e.name + '（' + (e.role||'') + '）'">{{ e.name }}</button>
+        </template>
+        <span v-else class="hint">没有其他成员可转（去管理台-人员里加人）</span>
+        <button class="act" style="border-color:#c0c4cc;color:#909399" @click="xferOpen=false">取消</button>
+      </div>
       <div class="td-foot row spread">
         <div class="row">
           <button class="act op" @click="openEditTodo(t)" title="编辑标题/类型/优先级/截止/版本线/对接人/描述">编辑</button>
@@ -77,7 +85,8 @@
             <button class="act op" @click="setStatus(t,'done')">评审通过</button>
             <button class="act op" @click="setStatus(t,'doing')">驳回返工</button>
           </template>
-          <button v-if="t.status==='todo'" class="act op" @click="shelfTodo(t)">暂时搁置</button>
+          <button v-if="t.status==='doing'" class="act op" @click="shelfTodo(t)">暂时搁置</button>
+          <button class="act op" @click="xferOpen=!xferOpen" title="忙不过来时把这条转给别人负责">{{ xferOpen ? '收起转交' : '转交' }}</button>
           <button class="act op" @click="delTodo(t)">删除</button>
         </div>
         <div class="row" style="align-items:center">
@@ -100,15 +109,25 @@
 </template>
 
 <script>
+import { ElMessageBox } from 'element-plus';
 import { rc, rm, ROOT_DATA, ROOT_COMPUTED, ROOT_METHODS } from './rootRefs';
 export default {
   name: 'TodoCard',
   inject: ['root'],
   props: { t: Object, mode: { type: String, default: 'today' } },
+  data() { return { xferOpen: false }; },
   computed: Object.assign(rc(ROOT_DATA.concat(ROOT_COMPUTED)), {
     /* 卡片上展示的 Owner / 测试责任人（复用 peerDev/peerTest 数据） */
     ownerDev() { return (this.t.meta && this.t.meta.peerDev) || ''; },
     ownerTest() { return (this.t.meta && this.t.meta.peerTest) || ''; },
+    /* 转交候选：全员（除自己外），按名字排 */
+    xferCandidates() {
+      var s = this.state;
+      if (!s || !s.employees) return [];
+      var meId = this.me ? this.me.id : (this.t.assigneeId || '');
+      return s.employees.filter(function(e){ return e.id !== meId; })
+        .sort(function(a, b){ return (a.name < b.name ? -1 : 1); });
+    },
     progressStages() {
       /* BUG 类走缺陷流转，其余需求/任务走研发阶段 */
       if (this.t.type === 'bug') return ['待处理', '已分析', '修复中', '修复完成', '已转测'];
@@ -116,6 +135,22 @@ export default {
     }
   }),
   methods: Object.assign(rm(ROOT_METHODS), {
+    /* 转交任务给他人：状态/今日标记原样保留，对方直接接手 */
+    transferTodo(t, emp) {
+      var self = this;
+      var me = this.me;
+      ElMessageBox.confirm(
+        '把「' + t.title + '」转交给 ' + emp.name + '（' + (emp.role || '') + '）？\n转走后它会从你的列表消失，出现在对方列表；状态原样保留。',
+        '转交任务', { confirmButtonText: '转交', cancelButtonText: '取消', type: 'info' }
+      ).then(function(){
+        self.root.api('/api/todo/' + t.id + '/transfer', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ to: emp.id, by: me ? me.id : 'sys' }) })
+          .then(function(r){
+            self.xferOpen = false;
+            if (r && r.ok) { self.root.toastMsg('已转交给 ' + emp.name + '：' + t.title); self.root.reload(); }
+            else self.root.toastMsg('转交失败：' + (r && r.error ? r.error : ''));
+          });
+      }).catch(function(){ /* 取消 */ });
+    },
     /* 迭代 chip 的 hover：转测时间/迭代窗口 */
     iterTitle(t) {
       var parts = [];

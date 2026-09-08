@@ -49,7 +49,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:14px;pa
 .chip.buglink{border-color:#db2777;color:#be185d;background:#fff0f5;cursor:pointer;text-decoration:none}
 .chip.buglink:hover{background:#fde3ec;border-color:#be185d;color:#9d174d}
 /* ===== 待办卡片：按状态配色（背景浅、边框同色系加深以显层次） ===== */
-.todo-item{background:rgb(217,236,255);border:1px solid rgb(112,182,255);border-radius:8px;padding:10px 12px;margin-bottom:8px}
+.todo-item{background:rgb(255, 255, 255);border:1px solid rgb(112,182,255);border-radius:8px;padding:10px 12px;margin-bottom:8px}
 .todo-item:last-child{margin-bottom:0}
 .todo-item:hover{box-shadow:0 0 0 2px rgba(64,158,255,.22)}
 .todo-item.b-done{border-color:#c8ccd4;background:#f5f7fa}
