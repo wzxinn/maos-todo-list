@@ -108,8 +108,150 @@
       "ownerId": null
     }
   ],
-  "versions": [],
-  "units": [],
+  "versions": [
+    {
+      "id": "v6a",
+      "name": "7.7.0",
+      "kind": "dev",
+      "series": "HC",
+      "mainlineId": "m1",
+      "freeze": "2026-09-03",
+      "release": "2026-09-10",
+      "milestones": [
+        {
+          "key": "freeze",
+          "label": "需求冻结",
+          "at": "2026-09-03"
+        },
+        {
+          "key": "first_test",
+          "label": "迭代一转测",
+          "at": "2026-09-05"
+        },
+        {
+          "key": "release",
+          "label": "版本发布",
+          "at": "2026-09-10"
+        },
+        {
+          "key": "go_live",
+          "label": "现网全量",
+          "at": "2026-09-17"
+        }
+      ],
+      "ownerId": null,
+      "createdAt": "2026-09-08T07:26:27.932Z",
+      "updatedAt": "2026-09-08T07:32:35.973Z"
+    },
+    {
+      "id": "v6f",
+      "name": "9.9.0",
+      "kind": "dev",
+      "series": "HCS",
+      "mainlineId": "m1",
+      "freeze": "2026-10-18",
+      "release": "2026-11-17",
+      "milestones": [
+        {
+          "key": "freeze",
+          "label": "需求冻结",
+          "at": "2026-10-18"
+        },
+        {
+          "key": "first_test",
+          "label": "迭代一转测",
+          "at": "2026-10-28"
+        },
+        {
+          "key": "release",
+          "label": "版本发布",
+          "at": "2026-11-17"
+        },
+        {
+          "key": "go_live",
+          "label": "现网全量",
+          "at": "2026-11-24"
+        }
+      ],
+      "ownerId": null,
+      "createdAt": "2026-09-08T07:28:32.089Z",
+      "updatedAt": "2026-09-08T07:28:32.089Z"
+    }
+  ],
+  "units": [
+    {
+      "id": "u6h",
+      "versionId": "v6f",
+      "name": "B001 · 首期",
+      "index": 1,
+      "planStart": "2026-09-08",
+      "planEnd": "2026-10-18",
+      "phases": [
+        {
+          "kind": "lesson",
+          "label": "开发",
+          "start": "2026-09-08",
+          "end": "2026-09-08"
+        },
+        {
+          "kind": "exam",
+          "label": "转测",
+          "start": "2026-10-18",
+          "end": "2026-10-18"
+        }
+      ],
+      "exam": null,
+      "createdAt": "2026-09-08T07:28:32.134Z"
+    },
+    {
+      "id": "u6j",
+      "versionId": "v6f",
+      "name": "B002 · 二期",
+      "index": 2,
+      "planStart": "2026-09-08",
+      "planEnd": "2026-10-18",
+      "phases": [
+        {
+          "kind": "lesson",
+          "label": "开发",
+          "start": "2026-09-08",
+          "end": "2026-09-08"
+        },
+        {
+          "kind": "exam",
+          "label": "转测",
+          "start": "2026-10-18",
+          "end": "2026-10-18"
+        }
+      ],
+      "exam": null,
+      "createdAt": "2026-09-08T07:28:32.151Z"
+    },
+    {
+      "id": "u6m",
+      "versionId": "v6a",
+      "name": "B004",
+      "index": 1,
+      "planStart": "2026-09-08",
+      "planEnd": "2026-09-10",
+      "phases": [
+        {
+          "kind": "lesson",
+          "label": "开发",
+          "start": "2026-09-08",
+          "end": "2026-09-08"
+        },
+        {
+          "kind": "exam",
+          "label": "转测",
+          "start": "2026-09-10",
+          "end": "2026-09-10"
+        }
+      ],
+      "exam": null,
+      "createdAt": "2026-09-08T07:32:34.607Z"
+    }
+  ],
   "sites": [],
   "todos": [
     {
@@ -1736,6 +1878,96 @@
       "action": "created",
       "by": "e1",
       "detail": "创建任务：BUG#9999 渲染Owner验证"
+    },
+    {
+      "id": "ev6b",
+      "at": "2026-09-08T07:26:27.932Z",
+      "entityType": "version",
+      "entityId": "v6a",
+      "action": "version_created",
+      "by": "e1",
+      "detail": "新增版本：7.7.0（HC · 研发）"
+    },
+    {
+      "id": "ev6c",
+      "at": "2026-09-08T07:26:41.231Z",
+      "entityType": "version",
+      "entityId": "v6a",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：7.7.0（名称/版本线/性质/负责人/冻结/发布）"
+    },
+    {
+      "id": "ev6d",
+      "at": "2026-09-08T07:27:04.310Z",
+      "entityType": "version",
+      "entityId": "v6a",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：7.7.0（名称/版本线/性质/负责人/冻结/发布）"
+    },
+    {
+      "id": "ev6e",
+      "at": "2026-09-08T07:28:24.373Z",
+      "entityType": "version",
+      "entityId": "v6a",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：7.7.0（名称/版本线/性质/负责人/冻结/发布）"
+    },
+    {
+      "id": "ev6g",
+      "at": "2026-09-08T07:28:32.089Z",
+      "entityType": "version",
+      "entityId": "v6f",
+      "action": "version_created",
+      "by": "sys",
+      "detail": "新增版本：9.9.0（HCS · 研发）"
+    },
+    {
+      "id": "ev6i",
+      "at": "2026-09-08T07:28:32.134Z",
+      "entityType": "unit",
+      "entityId": "u6h",
+      "action": "unit_created",
+      "by": "sys",
+      "detail": "9.9.0 新增迭代：B001 · 首期（2026-09-08 ~ 2026-10-18）"
+    },
+    {
+      "id": "ev6k",
+      "at": "2026-09-08T07:28:32.151Z",
+      "entityType": "unit",
+      "entityId": "u6j",
+      "action": "unit_created",
+      "by": "sys",
+      "detail": "9.9.0 新增迭代：B002 · 二期（2026-09-08 ~ 2026-10-18）"
+    },
+    {
+      "id": "ev6l",
+      "at": "2026-09-08T07:32:06.022Z",
+      "entityType": "version",
+      "entityId": "v6a",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：7.7.0（名称/版本线/性质/负责人/冻结/发布）"
+    },
+    {
+      "id": "ev6n",
+      "at": "2026-09-08T07:32:34.607Z",
+      "entityType": "unit",
+      "entityId": "u6m",
+      "action": "unit_created",
+      "by": "e1",
+      "detail": "7.7.0 新增迭代：B004（2026-09-08 ~ 2026-09-10）"
+    },
+    {
+      "id": "ev6o",
+      "at": "2026-09-08T07:32:35.973Z",
+      "entityType": "version",
+      "entityId": "v6a",
+      "action": "version_updated",
+      "by": "e1",
+      "detail": "更新版本：7.7.0（名称/版本线/性质/负责人/冻结/发布）"
     }
   ],
   "acks": [
