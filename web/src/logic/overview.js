@@ -192,10 +192,60 @@ export default {
               })
             });
           },
+    /* 成员 BUG 单量排行（横向柱状，从高到低；含已完成/处理中两类着色） */
+    renderBugRank() {
+            var el = document.getElementById('bugRankBar');
+            if (!el || typeof echarts === 'undefined' || !this.state || el.clientWidth === 0) return;
+            var s = this.state;
+            var today = s.today;
+            var count = {};   /* empId -> { open: n, done: n } */
+            var names = {};   /* empId -> name */
+            s.todos.forEach(function(t){
+              if (t.type !== 'bug' || t.status === 'canceled') return;
+              var key = t.assigneeId || '__none__';
+              names[key] = t.assigneeName || '未指派';
+              count[key] = count[key] || { open: 0, done: 0 };
+              if (t.status === 'done') count[key].done++;
+              else count[key].open++;
+            });
+            var rows = Object.keys(count).map(function(k){
+              return { id: k, name: names[k], open: count[k].open, done: count[k].done, total: count[k].open + count[k].done };
+            }).sort(function(a, b){ return b.total - a.total || (a.name < b.name ? -1 : 1); });
+            if (!rows.length) {
+              var c0 = echarts.getInstanceByDom(el); if (c0) c0.clear();
+              return;
+            }
+            var chart = echarts.getInstanceByDom(el) || echarts.init(el);
+            chart.setOption({
+              animationDuration: 200,
+              tooltip: {
+                trigger: 'axis', axisPointer: { type: 'shadow' },
+                backgroundColor: 'rgba(255,255,255,.98)', borderColor: '#cbd5e1',
+                textStyle: { color: '#303133', fontSize: 12 },
+                formatter: function(ps){
+                  if (!ps || !ps.length) return '';
+                  var idx = ps[0].dataIndex;
+                  var r = rows[idx];
+                  var open = r.open, done = r.done;
+                  return '<b>' + r.name + '</b> BUG 单<br/>合计 ' + r.total + '（处理中/待处理 ' + open + ' · 已完成 ' + done + '）';
+                }
+              },
+              grid: { left: 70, right: 40, top: 10, bottom: 24, containLabel: true },
+              xAxis: { type: 'value', name: '单量', axisLabel: { color: '#909399' }, splitLine: { lineStyle: { color: '#f2f6fc' } } },
+              yAxis: { type: 'category', data: rows.map(function(r){ return r.name; }), inverse: true, axisLabel: { color: '#334155' } },
+              series: [{
+                name: 'BUG 单量', type: 'bar', barWidth: '52%',
+                data: rows.map(function(r){ return r.total; }),
+                itemStyle: { color: '#db2777', borderRadius: [0, 6, 6, 0] },
+                label: { show: true, position: 'right', formatter: function(p){ return p.value; }, color: '#303133' }
+              }]
+            });
+          },
     renderAdminCharts() {
             this.renderLoadHeat();
             this.renderManDaysBar();
             this.renderMonthDoneBar();
+            this.renderBugRank();
           },
   }
 };

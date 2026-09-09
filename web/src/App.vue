@@ -219,7 +219,7 @@ export default {
       self.paintCharts();
     });
     window.addEventListener('resize', function(){
-      ['loadHeat', 'manDaysBar', 'monthDoneBar'].forEach(function(id){
+      ['loadHeat', 'manDaysBar', 'monthDoneBar', 'bugRankBar'].forEach(function(id){
         var el = document.getElementById(id);
         if (el && typeof echarts !== 'undefined') { var g = echarts.getInstanceByDom(el); if (g) g.resize(); }
       });

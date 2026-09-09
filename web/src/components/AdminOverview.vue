@@ -20,6 +20,13 @@
       <div class="hint">颜色越深当天的管道负载越高（转测 3 / 截止 2，合计封顶 9）；悬停看当天塞了什么事。</div>
     </div>
 
+    <!-- 成员 BUG 单量排行 -->
+    <div class="panel" style="margin-bottom:12px">
+      <h3>成员 BUG 单量排行</h3>
+      <div id="bugRankBar" style="width:100%;height:300px"></div>
+      <div class="hint">按名下 BUG 修复单总数从高到低；悬停看处理中/待处理与已完成各多少。</div>
+    </div>
+
     <!-- 未来最近一个迭代：待处理事项清单 -->
     <div class="panel" style="margin-bottom:12px" v-if="nextIter">
       <div class="row spread" style="margin-bottom:4px">
